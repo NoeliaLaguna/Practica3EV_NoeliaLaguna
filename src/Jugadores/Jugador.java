@@ -1,3 +1,7 @@
+package Jugadores;
+
+import Preguntas.Pregunta;
+
 public abstract class Jugador {
     private String nombre;
     private int puntos = 0;

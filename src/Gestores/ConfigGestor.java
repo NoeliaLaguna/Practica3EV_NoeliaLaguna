@@ -1,3 +1,5 @@
+package Gestores;
+
 public class ConfigGestor {
     public Configuracion leer() {
         Configuracion depuracion = new Configuracion();
