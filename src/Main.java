@@ -51,7 +51,9 @@ public class Main {
                     }
                 } while (jugadoresCPU + jugadoresHumanos != numJugadores);
 
-                elegirTipoDePartida(numJugadores, jugadoresHumanos, teclado, jugadoresCPU);
+                Juego juego = new Juego();
+                juego.empezar();
+                elegirTipoDePartida(teclado, juego);
 
                 break;
             case 2:
@@ -122,7 +124,7 @@ public class Main {
 
     }
 
-    private static void elegirTipoDePartida(int numJugadores, int jugadoresHumanos, Scanner teclado, int jugadoresMaquina) {
+    private static void elegirTipoDePartida(Scanner teclado, Juego juego) {
 
         boolean salir = false;
         System.out.println("""
@@ -137,23 +139,36 @@ public class Main {
         while (!salir) {
             int opcion = teclado.nextInt();
             teclado.nextLine();
+            int numRondas;
 
             switch (opcion) {
             case 1:
                 System.out.println("Has elegido la opción \"Partida rápida\".");
-
+                numRondas = 3;
+                for (int cont = 0; cont <= numRondas; cont++) {
+                    juego.jugarRonda();
+                }
                 break;
             case 2:
                 System.out.println("Has elegido la opción \"Partida corta\".");
-
+                numRondas = 5;
+                for (int cont = 0; cont <= numRondas; cont++) {
+                    juego.jugarRonda();
+                }
                 break;
             case 3:
                 System.out.println("Has elegido la opción \"Partida normal\".");
-
+                numRondas = 10;
+                for (int cont = 0; cont <= numRondas; cont++) {
+                    juego.jugarRonda();
+                }
                 break;
             case 4:
                 System.out.println("Has elegido la opción \"Partida larga.\".");
-
+                numRondas = 20;
+                for (int cont = 0; cont <= numRondas; cont++) {
+                    juego.jugarRonda();
+                }
                 break;
             case 5:
                 System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
