@@ -58,7 +58,7 @@ public class Main {
                 System.out.println("Has elegido la opción \"Jugar una partida\"");
 
                 Juego juego = new Juego(jugadorGestor);
-                juego.ejecutar();
+                //juego.ejecutar();
 
                 //juego.empezar(teclado);
                 //elegirTipoDePartida(teclado, juego); //No sé si debería meterlo en juego o dejarlo aqui.
@@ -73,7 +73,12 @@ public class Main {
                 break;
             case 4:
                 System.out.println("Has elegido la opción \"Acceder al submenu de jugadores\".");
-                accederSubmenuJugadores(teclado, jugadoresHumanos);
+
+                try {
+                    accederSubmenuJugadores(teclado, jugadoresHumanos);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case 5:
                 System.out.println("Has elegido la opción salir. Hasta pronto!!");
@@ -87,7 +92,7 @@ public class Main {
 
     }
 
-    private static void accederSubmenuJugadores(Scanner teclado, int jugadoresHumanos) {
+    private static void accederSubmenuJugadores(Scanner teclado, int jugadoresHumanos) throws IOException {
         int opcion;
         System.out.println("""
                 Estas en el el submenu de Jugadores. ¿Qué quieres hacer? Elige el número de la opción que prefieras.
@@ -116,7 +121,7 @@ public class Main {
         }
     }
 
-    private static void registrarJugadorHumano(Scanner teclado) {
+    private static void registrarJugadorHumano(Scanner teclado) throws IOException {
         System.out.println("""
                 Ahora debemos registrar los jugadores.
                 Dime el nombre del jugador, recuerda, cada nombre es único en el sistema.
