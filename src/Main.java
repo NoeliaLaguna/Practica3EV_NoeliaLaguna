@@ -8,8 +8,21 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        JugadorGestor jugadorGestor;
+        //TODO: declarar resto de gestores
+
         MatematicasPregunta preguntaPrueba = new MatematicasPregunta();
         preguntaPrueba.preguntar();
+
+        try {
+            jugadorGestor = new JugadorGestor();
+            //TODO: crear resto de gestores
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+            // si no somos capaces de crear los gestores
+            return;
+        }
 
         Scanner teclado = new Scanner(System.in);
 
@@ -32,11 +45,23 @@ public class Main {
 
             switch (opcion) {
             case 1:
+
+                try {
+                    if (jugadorGestor.sinJugadores()) {
+                        System.err.println("No tienes jugadores registrados.");
+                        break;
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 System.out.println("Has elegido la opción \"Jugar una partida\"");
 
-                Juego juego = new Juego();
-                juego.empezar(teclado);
-                elegirTipoDePartida(teclado, juego);
+                Juego juego = new Juego(jugadorGestor);
+                juego.ejecutar();
+
+                //juego.empezar(teclado);
+                //elegirTipoDePartida(teclado, juego); //No sé si debería meterlo en juego o dejarlo aqui.
 
                 break;
             case 2:

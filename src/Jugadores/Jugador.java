@@ -27,4 +27,9 @@ public abstract class Jugador {
     public int getPuntos() {
         return puntos;
     }
+
+    @Override
+    public String toString() {
+        return this.nombre.toUpperCase();
+    }
 }

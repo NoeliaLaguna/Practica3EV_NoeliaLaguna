@@ -2,6 +2,7 @@ package Gestores;
 
 import Jugadores.HumanoJugador;
 import Jugadores.Jugador;
+import Utils.Constantes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,10 +13,17 @@ import java.util.List;
 
 public class JugadorGestor {
 
+    private final Path rutaAlArchivo;
+
+    public JugadorGestor() throws IOException {
+        this.rutaAlArchivo = Paths.get(Constantes.FicheroJugadores); //Revisar esto, da error de accessDeniedException
+        if (!Files.exists(this.rutaAlArchivo)) {
+            Files.createFile(this.rutaAlArchivo);
+        }
+    }
+
     public void registrar(Jugador jug) throws IOException {
         List<String> listaJugadores;
-
-        Path rutaAlArchivo = Paths.get("JugadoresRegistrados.txt"); //Revisar esto, da error de accessDeniedException
 
         if (!Files.exists(rutaAlArchivo)) {
             Files.createFile(rutaAlArchivo);
@@ -33,16 +41,11 @@ public class JugadorGestor {
 
     }
 
-    public static void mostrar() throws IOException {
+    public void mostrar() throws IOException {
 
-        Path rutaAlArchivo = Paths.get("JugadoresRegistrados.txt"); //Revisar esto, da error de accessDeniedException
-        if (!Files.exists(rutaAlArchivo)) {
-            Files.createFile(rutaAlArchivo);
-        }
-
-        List<String> listaJugadores = Files.readAllLines(rutaAlArchivo);
-        for (String nombreJugador : listaJugadores) {
-            System.out.println("\n" + nombreJugador + "\n");
+        ArrayList<HumanoJugador> jugadores = listar();
+        for (int i = 0; i < jugadores.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, jugadores.get(i).getNombre());
         }
 
     }
@@ -51,9 +54,18 @@ public class JugadorGestor {
 
     }
 
-    public List<HumanoJugador> listar() {
-        List<HumanoJugador> jugadoresHumanos = new ArrayList<>();
+    public boolean sinJugadores() throws IOException {
+        return listar().isEmpty();
+    }
 
-        return jugadoresHumanos;
+    public ArrayList<HumanoJugador> listar() throws IOException {
+        ArrayList<HumanoJugador> jugadores = new ArrayList<>();
+        List<String> listaJugadores = Files.readAllLines(rutaAlArchivo);
+        for (String nombreJugador : listaJugadores) {
+            HumanoJugador j = new HumanoJugador(nombreJugador);
+            jugadores.add(j);
+
+        }
+        return jugadores;
     }
 }
