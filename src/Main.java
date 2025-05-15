@@ -1,22 +1,30 @@
+import Gestores.ConfigGestor;
 import Gestores.JugadorGestor;
+import Gestores.LogGestor;
 import Jugadores.HumanoJugador;
-import Preguntas.MatematicasPregunta;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+import static Utils.MetodosEstaticos.stringConComprobacionDigit;
+
 public class Main {
     public static void main(String[] args) {
 
-        JugadorGestor jugadorGestor;
-        //TODO: declarar resto de gestores
-
-        MatematicasPregunta preguntaPrueba = new MatematicasPregunta();
-        preguntaPrueba.preguntar();
+        Scanner teclado = new Scanner(System.in);
+        //declarar resto de gestores
+        JugadorGestor gestorJugador;
+        HistorialGestor gestorhistorial;
+        LogGestor gestorLogs;
+        ConfigGestor gestorConfig;
 
         try {
-            jugadorGestor = new JugadorGestor();
-            //TODO: crear resto de gestores
+            //crear resto de gestores
+            gestorJugador = new JugadorGestor();
+            gestorhistorial = new HistorialGestor();
+            gestorConfig = new ConfigGestor();
+            gestorLogs = new LogGestor();
+
         } catch (IOException ex) {
             ex.printStackTrace();
 
@@ -24,10 +32,6 @@ public class Main {
             return;
         }
 
-        Scanner teclado = new Scanner(System.in);
-
-        int jugadoresHumanos = 0;
-        int jugadoresCPU;
         boolean salir = false;
 
         while (!salir) {
@@ -39,26 +43,28 @@ public class Main {
                     3.- Ver el histórico de partidas.
                     4.- Acceder al submenu de Jugadores.
                     5.- Salir""");
-
-            int opcion = teclado.nextInt();
-            teclado.nextLine();
+            String opcionEscrita = stringConComprobacionDigit();
+            int opcion = Integer.parseInt(opcionEscrita);
 
             switch (opcion) {
             case 1:
 
                 try {
-                    if (jugadorGestor.sinJugadores()) {
+                    if (gestorJugador.sinJugadores()) {
                         System.err.println("No tienes jugadores registrados.");
                         break;
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                try {
+                    System.out.println("Has elegido la opción \"Jugar una partida\"");
+                    Juego juego = new Juego(gestorJugador);
 
-                System.out.println("Has elegido la opción \"Jugar una partida\"");
-
-                Juego juego = new Juego(jugadorGestor);
-                //juego.ejecutar();
+                    juego.ejecutar();
+                } catch (IOException e) {
+                    System.err.println("Error al iniciar el juego.");
+                }
 
                 //juego.empezar(teclado);
                 //elegirTipoDePartida(teclado, juego); //No sé si debería meterlo en juego o dejarlo aqui.
@@ -75,7 +81,7 @@ public class Main {
                 System.out.println("Has elegido la opción \"Acceder al submenu de jugadores\".");
 
                 try {
-                    accederSubmenuJugadores(teclado, jugadoresHumanos);
+                    accederSubmenuJugadores(gestorJugador);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -92,7 +98,8 @@ public class Main {
 
     }
 
-    private static void accederSubmenuJugadores(Scanner teclado, int jugadoresHumanos) throws IOException {
+    private static void accederSubmenuJugadores(JugadorGestor jugadorGestor) throws IOException {
+        Scanner teclado = new Scanner(System.in);
         int opcion;
         System.out.println("""
                 Estas en el el submenu de Jugadores. ¿Qué quieres hacer? Elige el número de la opción que prefieras.
@@ -101,8 +108,8 @@ public class Main {
                 3.- Eliminar jugador: permite eliminar del sistema a un jugador registrado.\s
                 4.- Volver: vuelve al menú principal.""");
 
-        opcion = teclado.nextInt();
-        teclado.nextLine();
+        String opcionEscrita = stringConComprobacionDigit();
+        opcion = Integer.parseInt(opcionEscrita);
 
         switch (opcion) {
         case 1:
@@ -110,7 +117,20 @@ public class Main {
             break;
         case 2:
             System.out.println("Has elegido la opción \"Añadir jugador\".");
-            registrarJugadorHumano(teclado);
+
+            System.out.println("""
+                    Ahora debemos registrar los jugadores.
+                    Dime el nombre del jugador, recuerda, cada nombre es único en el sistema.
+                    (Si ya estás registrado, el sistema lo detectará al escribir tu nombre).""");
+            //TODO: Controlar que solamente se pueden meter nombres sin espacios.
+            String nombre = teclado.nextLine();
+            HumanoJugador jug = new HumanoJugador(nombre);
+            try {
+                jugadorGestor.registrar(jug);
+            } catch (IOException e) {
+                System.err.println("Error al registrar el jugador: " + e);
+            }
+
             break;
         case 3:
             System.out.println("Has elegido la opción \"Eliminar jugador\".");
@@ -121,75 +141,5 @@ public class Main {
         }
     }
 
-    private static void registrarJugadorHumano(Scanner teclado) throws IOException {
-        System.out.println("""
-                Ahora debemos registrar los jugadores.
-                Dime el nombre del jugador, recuerda, cada nombre es único en el sistema.
-                (Si ya estás registrado, el sistema lo detectará al escribir tu nombre).""");
-        String nombre = teclado.nextLine();
-        JugadorGestor gestor = new JugadorGestor();
-        HumanoJugador jug = new HumanoJugador(nombre);
-        try {
-            gestor.registrar(jug);
-        } catch (IOException e) {
-            System.err.println("Error al registrar el jugador: " + e);
-        }
-
-    }
-
-    private static void elegirTipoDePartida(Scanner teclado, Juego juego) {
-
-        boolean salir = false;
-        System.out.println("""
-                ¿Que tipo de partida quieres jugar? Elige el numero de la opción que prefieras.
-                1.- partida rápida (3 Rondas)
-                2.- partida corta (5 Rondas)
-                3.- partida normal (10 Rondas)
-                4.- Partida larga (20 Rondas)
-                5.- Volver al menu de inicio.
-                """);
-
-        while (!salir) {
-            int opcion = teclado.nextInt();
-            teclado.nextLine();
-            int numRondas;
-
-            switch (opcion) {
-            case 1:
-                System.out.println("Has elegido la opción \"Partida rápida\".");
-                numRondas = 3;
-                for (int cont = 0; cont <= numRondas; cont++) {
-                    juego.jugarRonda();
-                }
-                break;
-            case 2:
-                System.out.println("Has elegido la opción \"Partida corta\".");
-                numRondas = 5;
-                for (int cont = 0; cont <= numRondas; cont++) {
-                    juego.jugarRonda();
-                }
-                break;
-            case 3:
-                System.out.println("Has elegido la opción \"Partida normal\".");
-                numRondas = 10;
-                for (int cont = 0; cont <= numRondas; cont++) {
-                    juego.jugarRonda();
-                }
-                break;
-            case 4:
-                System.out.println("Has elegido la opción \"Partida larga.\".");
-                numRondas = 20;
-                for (int cont = 0; cont <= numRondas; cont++) {
-                    juego.jugarRonda();
-                }
-                break;
-            case 5:
-                System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
-                salir = true;
-                break;
-            }
-
-        }
-    }
-
 }
+

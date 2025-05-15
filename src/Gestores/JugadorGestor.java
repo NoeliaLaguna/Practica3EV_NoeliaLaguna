@@ -45,7 +45,7 @@ public class JugadorGestor {
 
         ArrayList<HumanoJugador> jugadores = listar();
         for (int i = 0; i < jugadores.size(); i++) {
-            System.out.printf("%d. %s\n", i + 1, jugadores.get(i).getNombre());
+            System.out.printf("%d. %s\n", (i + 1), jugadores.get(i).getNombre());
         }
 
     }

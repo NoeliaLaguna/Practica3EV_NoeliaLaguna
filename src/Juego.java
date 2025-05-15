@@ -1,12 +1,15 @@
 import Gestores.JugadorGestor;
 import Jugadores.HumanoJugador;
 import Jugadores.Jugador;
-import Preguntas.Pregunta;
+import Preguntas.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
+
+import static Utils.MetodosEstaticos.stringConComprobacionDigit;
 
 public class Juego {
 
@@ -19,16 +22,59 @@ public class Juego {
 
     public Juego(JugadorGestor jugadorGestor) {
         this.jugadorGestor = jugadorGestor;
+
     }
 
     public void ejecutar() throws IOException {
         this.configurarPartida();
-        this.elegirTipoPartida();
-        this.empezar();
+        int numRondas = this.elegirTipoPartida();
+        this.empezar(numRondas);
     }
 
-    private void elegirTipoPartida() {
-        // TODO
+    private int elegirTipoPartida() {
+        // TODO: Crear el menu de elección de partida.
+        int numRondas = -1;
+        Scanner teclado = new Scanner(System.in);
+
+        boolean salir = false;
+        System.out.println("""
+                ¿Que tipo de partida quieres jugar? Elige el numero de la opción que prefieras.
+                1.- partida rápida (3 Rondas)
+                2.- partida corta (5 Rondas)
+                3.- partida normal (10 Rondas)
+                4.- Partida larga (20 Rondas)
+                5.- Volver al menu de inicio.
+                """);
+
+        while (!salir) {
+            int opcion = teclado.nextInt();
+            teclado.nextLine();
+
+            switch (opcion) {
+            case 1:
+                System.out.println("Has elegido la opción \"Partida rápida\".");
+                numRondas = 3;
+                break;
+            case 2:
+                System.out.println("Has elegido la opción \"Partida corta\".");
+                numRondas = 5;
+                break;
+            case 3:
+                System.out.println("Has elegido la opción \"Partida normal\".");
+                numRondas = 10;
+                break;
+            case 4:
+                System.out.println("Has elegido la opción \"Partida larga.\".");
+                numRondas = 20;
+                break;
+            case 5:
+                System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
+                salir = true;
+                break;
+            }
+
+        }
+        return numRondas;
     }
 
     private void configurarPartida() throws IOException {
@@ -40,7 +86,9 @@ public class Juego {
         int numJugadores = -1;
         do {
             System.out.println("Indica número de jugadores entre 2 y 4");
-            numJugadores = teclado.nextInt();
+            String opcionEscrita = stringConComprobacionDigit();
+            numJugadores = Integer.parseInt(opcionEscrita);
+
         } while (numJugadores > 4 || numJugadores < 2);
 
         //int limiteJugadoresHumanos = this.jugadoresHumanosDisponibles.size() >= numJugadores ? numJugadores : numJugadores - this.jugadoresHumanosDisponibles.size();
@@ -52,24 +100,57 @@ public class Juego {
         }
 
         do {
-            System.out.printf("Indica número de jugadores humanos entre 2 y %d", limiteJugadoresHumanos);
-            numJugadores = teclado.nextInt();
+            System.out.printf("Indica número de jugadores humanos entre 2 y %d\n", limiteJugadoresHumanos);
+
+            String opcionEscrita = stringConComprobacionDigit();
+            jugadoresHumanos = Integer.parseInt(opcionEscrita);
         } while (jugadoresHumanos > numJugadores || jugadoresHumanos < 2);
 
         if (jugadoresHumanos < numJugadores) {
             jugadoresCPU = numJugadores - jugadoresHumanos;
-            System.out.printf("El numero de jugadores CPU es: %d", jugadoresCPU);
+            System.out.printf("El numero de jugadores CPU es: %d \n", jugadoresCPU);
+
         }
 
-        //TODO: Seleccionar los jugadores. Podría mostrar por pantalla el listado del fichero de jugadores registrados para que el usuario tenga la info de que juagdores están. Muestra la lista que te da jugadorGestor y escoge entre ellos
-        //TODO: Comprobar si el numero de jugador seleccionado esta disponible o no lo has escogido ya. Y sino, volver a preguntar otra vez por una eleccion
-        //TODO: Si el jugador esta correctamente registrado, añadirlo a la Lista de jugadores "private List<Jugador> jugadores".
+        //HECHO: Seleccionar los jugadores. Podría mostrar por pantalla el listado del fichero de jugadores registrados para que el usuario tenga la info de que
+        // jugadores están. Muestra la lista que te da jugadorGestor y escoge entre ellos.
+        //HECHO: Comprobar si el numero de jugador seleccionado esta disponible o no lo has escogido ya. Y sino, volver a preguntar otra vez por una elección.
+        //HECHO: Si el jugador esta correctamente registrado, añadirlo a la Lista de jugadores "private List<Jugador> jugadores".
+        //TODO: Falta manejar que pasa si el usuario introduce un numero superior o inferior a los de la lista.
+
+        jugadores = new ArrayList<>(); //Es correcto inicializar el array aqui?
+
+        int opcionAntigua = -1;
+        int opcionLista = -1;
+        for (int cont = 1; cont <= jugadoresHumanos; cont++) {
+            jugadorGestor.mostrar();
+            System.out.println("Elige un jugador de los que están registrados para jugar, indicando el número en la lista.");
+            System.out.println("****Recuerda que no se puede repetir el jugador que ya has elegido.****");
+
+            String opcionEscrita = stringConComprobacionDigit();
+            opcionLista = Integer.parseInt(opcionEscrita);
+
+            while (opcionAntigua == opcionLista) {
+                System.out.println("Esa opción ya la has elegido. Recuerda que no se puede repetir. Por favor elije otro numero.");
+                opcionEscrita = stringConComprobacionDigit();
+                opcionLista = Integer.parseInt(opcionEscrita);
+            }
+            HumanoJugador jugadorAAnyadir = jugadoresHumanosDisponibles.get(opcionLista - 1);
+            jugadores.add(jugadorAAnyadir);
+            System.out.println("Jugador añadido correctamente a la partida.");
+            opcionAntigua = opcionLista;
+
+        }
 
     }
 
-    private void empezar() throws IOException {
+    private void empezar(int numRondas) throws IOException {
 
-        // TODO: generar preguntas aleatorias
+        //TODO: Ordenar jugadores de forma aleatoria.
+
+        for (int cont = 0; cont <= numRondas; cont++) {
+            this.jugarRonda();
+        }
 
     }
 
@@ -81,7 +162,29 @@ public class Juego {
     }
 
     public void jugarRonda() {
-        //TODO: Hacer pregunta y evaluar la respuesta de todos los jugadores seleccionados para la partida.
+        //TODO: Hacer pregunta al azar y evaluar la respuesta de todos los jugadores seleccionados para la partida.
+
+        // Con el for nos aseguramos que haya una pregunta para cada jugador.
+        for (int cont = 0; cont < jugadores.size(); cont++) {
+            Random aleatorio = new Random();
+            int tipoDePregunta = aleatorio.nextInt(1, 5);
+            switch (tipoDePregunta) {
+            case 1:
+                MatematicasPregunta preguntaMates = new MatematicasPregunta();
+                break;
+            case 2:
+                MasterMindPregunta preguntaMastermind = new MasterMindPregunta();
+                break;
+            case 3:
+                GeografiaPregunta preguntaGeografia = new GeografiaPregunta();
+                break;
+            case 4:
+                CronometroPregunta preguntaCronometro = new CronometroPregunta();
+                break;
+
+            }
+        }
+
         //TODO: Añadir puntos a los jugadores.
 
     }
