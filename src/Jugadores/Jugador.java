@@ -11,10 +11,7 @@ public abstract class Jugador {
         this.puntos = 0;
     }
 
-    public String responder(Pregunta p) {
-        String respuesta = "";
-        return respuesta;
-    }
+    public abstract String responder(Pregunta p);
 
     public void puntuar() {
         puntos++;

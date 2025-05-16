@@ -8,6 +8,12 @@ package Preguntas;
  * @version 1.0
  */
 public class CronometroPregunta implements Pregunta {
+
+    @Override
+    public int getNumeroIntentos() {
+        return 1;
+    }
+
     /**
      * Metodo para lanzar la pregunta.
      */

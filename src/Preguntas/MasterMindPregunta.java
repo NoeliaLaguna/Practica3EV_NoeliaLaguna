@@ -8,6 +8,12 @@ package Preguntas;
  * @version 1.0
  */
 public class MasterMindPregunta implements Pregunta {
+
+    @Override
+    public int getNumeroIntentos() {
+        return 3;
+    }
+
     /**
      * Metodo para lanzar la pregunta.
      */

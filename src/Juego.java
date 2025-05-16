@@ -3,6 +3,7 @@ import Jugadores.CPUJugador;
 import Jugadores.HumanoJugador;
 import Jugadores.Jugador;
 import Preguntas.*;
+import Utils.Constantes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,13 +29,12 @@ public class Juego {
 
     public void ejecutar() throws IOException {
         this.configurarPartida();
-        int numRondas = this.elegirTipoPartida();
-        this.empezar(numRondas);
+        this.elegirTipoPartida();
+        this.empezar();
     }
 
-    private int elegirTipoPartida() {
+    private void elegirTipoPartida() {
         // TODO: Crear el menu de elección de partida.
-        int numRondas = -1;
         Scanner teclado = new Scanner(System.in);
 
         boolean salir = false;
@@ -54,19 +54,22 @@ public class Juego {
             switch (opcion) {
             case 1:
                 System.out.println("Has elegido la opción \"Partida rápida\".");
-                numRondas = 3;
+                this.rondas = Constantes.RONDAS_PARTIDA_RAPIDA;
                 break;
             case 2:
                 System.out.println("Has elegido la opción \"Partida corta\".");
-                numRondas = 5;
+                this.rondas = Constantes.RONDAS_PARTIDA_CORTA;
+                ;
                 break;
             case 3:
                 System.out.println("Has elegido la opción \"Partida normal\".");
-                numRondas = 10;
+                this.rondas = Constantes.RONDAS_PARTIDA_NORMAL;
+                ;
                 break;
             case 4:
                 System.out.println("Has elegido la opción \"Partida larga.\".");
-                numRondas = 20;
+                this.rondas = Constantes.RONDAS_PARTIDA_LARGA;
+                ;
                 break;
             case 5:
                 System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
@@ -75,7 +78,6 @@ public class Juego {
             }
 
         }
-        return numRondas;
     }
 
     private void configurarPartida() throws IOException {
@@ -155,12 +157,12 @@ public class Juego {
 
     }
 
-    private void empezar(int numRondas) throws IOException {
+    private void empezar() throws IOException {
 
         //TODO: Ordenar jugadores de forma aleatoria.
         //jugadores.sort(); //No recuerdo bien como se usaba el Comparator.
 
-        for (int cont = 0; cont <= numRondas; cont++) {
+        for (int cont = 0; cont <= this.rondas; cont++) {
             this.jugarRonda();
         }
 
@@ -169,8 +171,9 @@ public class Juego {
     private void terminar() {
 
         //TODO: Recuento final de puntos. Mostrar por pantalla.
+
         //TODO: Añadir partida a Histórico.
-        
+
     }
 
     public void jugarRonda() {
@@ -179,10 +182,33 @@ public class Juego {
 
         // Con el for nos aseguramos que haya una pregunta para cada jugador.
         for (int cont = 0; cont < jugadores.size(); cont++) {
+            Jugador jugador = jugadores.get(cont);
             Random aleatorio = new Random();
             String respuesta;
             int tipoDePregunta = aleatorio.nextInt(1, 5);
+            Pregunta pregunta = null;
             switch (tipoDePregunta) {
+            case 1 -> pregunta = new MatematicasPregunta();
+            case 2 -> pregunta = new MasterMindPregunta();
+            case 3 -> pregunta = new GeografiaPregunta();
+            case 4 -> pregunta = new CronometroPregunta();
+            default -> new MatematicasPregunta();
+            }
+
+            boolean acierto = false;
+            if (pregunta != null) {
+                pregunta.preguntar();
+
+                for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
+                    System.out.println("Escribe tu respuesta:");
+                    respuesta = jugador.responder(pregunta);
+                    acierto = pregunta.evaluarRespuesta(respuesta);
+                }
+
+            }
+
+
+            /*switch (tipoDePregunta) {
             case 1:
                 MatematicasPregunta preguntaMates = new MatematicasPregunta();
                 preguntaMates.preguntar();
@@ -245,7 +271,7 @@ public class Juego {
                 }
                 break;
 
-            }
+            }*/
         }
 
     }

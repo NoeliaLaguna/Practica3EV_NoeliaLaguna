@@ -2,6 +2,9 @@ package Preguntas;
 
 import Utils.Constantes;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.util.Random;
 
 /**
@@ -15,6 +18,13 @@ public class MatematicasPregunta implements Pregunta {
     /**
      * Metodo para lanzar la pregunta.
      */
+    private String operacion;
+
+    @Override
+    public int getNumeroIntentos() {
+        return 1;
+    }
+
     @Override
     public void preguntar() {
 
@@ -35,6 +45,8 @@ public class MatematicasPregunta implements Pregunta {
             }
         }
 
+        this.operacion = operacion.toString();
+
         System.out.println(operacion);
 
     }
@@ -47,10 +59,20 @@ public class MatematicasPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
+        try {
+            double resultadoCorrecto = Double.parseDouble(engine.eval(operacion).toString());
+            double resultadoUsuario = Double.parseDouble(respuesta);
+            return resultadoUsuario == resultadoCorrecto;
+        } catch (NumberFormatException | ScriptException ex) {
+            ex.printStackTrace();
+            return false;
+        }
 
-        //Me he descargado la librería exp4j pero no se usarla.
-
-        return false;
     }
 
+    public String getOperacion() {
+        return operacion;
+    }
 }
