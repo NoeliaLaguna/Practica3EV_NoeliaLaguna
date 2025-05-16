@@ -117,13 +117,17 @@ public class Main {
             break;
         case 2:
             System.out.println("Has elegido la opción \"Añadir jugador\".");
+            String nombre;
+            //HECHO: Controlar que solamente se pueden meter nombres sin espacios.
+            do {
+                System.out.println("""
+                        Ahora debemos registrar los jugadores.
+                        Dime el nombre del jugador, recuerda, cada nombre es único en el sistema y no puede contener espacios.
+                        (Si ya estás registrado, el sistema lo detectará al escribir tu nombre).""");
 
-            System.out.println("""
-                    Ahora debemos registrar los jugadores.
-                    Dime el nombre del jugador, recuerda, cada nombre es único en el sistema.
-                    (Si ya estás registrado, el sistema lo detectará al escribir tu nombre).""");
-            //TODO: Controlar que solamente se pueden meter nombres sin espacios.
-            String nombre = teclado.nextLine();
+                nombre = teclado.nextLine();
+            } while (nombre.contains(" "));
+
             HumanoJugador jug = new HumanoJugador(nombre);
             try {
                 jugadorGestor.registrar(jug);
@@ -140,6 +144,5 @@ public class Main {
             break;
         }
     }
-
 }
 
