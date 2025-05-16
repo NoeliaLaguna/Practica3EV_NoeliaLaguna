@@ -52,4 +52,5 @@ public class MatematicasPregunta implements Pregunta {
 
         return false;
     }
+
 }

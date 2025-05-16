@@ -1,4 +1,5 @@
 import Gestores.JugadorGestor;
+import Jugadores.CPUJugador;
 import Jugadores.HumanoJugador;
 import Jugadores.Jugador;
 import Preguntas.*;
@@ -116,19 +117,21 @@ public class Juego {
         // jugadores están. Muestra la lista que te da jugadorGestor y escoge entre ellos.
         //HECHO: Comprobar si el numero de jugador seleccionado esta disponible o no lo has escogido ya. Y sino, volver a preguntar otra vez por una elección.
         //HECHO: Si el jugador esta correctamente registrado, añadirlo a la Lista de jugadores "private List<Jugador> jugadores".
-        //TODO: Falta manejar que pasa si el usuario introduce un numero superior o inferior a los de la lista.
+        //HECHO: Falta manejar que pasa si el usuario introduce un numero superior o inferior a los de la lista.
 
         jugadores = new ArrayList<>(); //Es correcto inicializar el array aqui?
 
         int opcionAntigua = -1;
         int opcionLista = -1;
         for (int cont = 1; cont <= jugadoresHumanos; cont++) {
-            jugadorGestor.mostrar();
-            System.out.println("Elige un jugador de los que están registrados para jugar, indicando el número en la lista.");
-            System.out.println("****Recuerda que no se puede repetir el jugador que ya has elegido.****");
-
-            String opcionEscrita = stringConComprobacionDigit();
-            opcionLista = Integer.parseInt(opcionEscrita);
+            String opcionEscrita;
+            do {
+                jugadorGestor.mostrar();
+                System.out.println("Elige un jugador de los que están registrados para jugar, indicando el número en la lista.");
+                System.out.println("****Recuerda que no se puede repetir el jugador que ya has elegido.****");
+                opcionEscrita = stringConComprobacionDigit();
+                opcionLista = Integer.parseInt(opcionEscrita);
+            } while (opcionLista > jugadoresHumanosDisponibles.size() || opcionLista <= 0);
 
             while (opcionAntigua == opcionLista) {
                 System.out.println("Esa opción ya la has elegido. Recuerda que no se puede repetir. Por favor elije otro numero.");
@@ -142,11 +145,20 @@ public class Juego {
 
         }
 
+        //HECHO: Falta añadir las CPU a la lista de jugadores.
+        if (jugadores.size() < numJugadores) {
+            for (int cont = 0; cont < jugadoresCPU; cont++) {
+                CPUJugador CPU = new CPUJugador("CPU" + (cont + 1));
+                jugadores.add(CPU);
+            }
+        }
+
     }
 
     private void empezar(int numRondas) throws IOException {
 
         //TODO: Ordenar jugadores de forma aleatoria.
+        //jugadores.sort(); //No recuerdo bien como se usaba el Comparator.
 
         for (int cont = 0; cont <= numRondas; cont++) {
             this.jugarRonda();
@@ -162,30 +174,79 @@ public class Juego {
     }
 
     public void jugarRonda() {
-        //TODO: Hacer pregunta al azar y evaluar la respuesta de todos los jugadores seleccionados para la partida.
+        //HECHO: Hacer pregunta al azar y evaluar la respuesta de todos los jugadores seleccionados para la partida.
+        //HECHO: Añadir puntos a los jugadores.
 
         // Con el for nos aseguramos que haya una pregunta para cada jugador.
         for (int cont = 0; cont < jugadores.size(); cont++) {
             Random aleatorio = new Random();
+            String respuesta;
             int tipoDePregunta = aleatorio.nextInt(1, 5);
             switch (tipoDePregunta) {
             case 1:
                 MatematicasPregunta preguntaMates = new MatematicasPregunta();
+                preguntaMates.preguntar();
+                if (jugadores.get(cont) instanceof HumanoJugador) {
+                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaHumano.responder(preguntaMates);
+                } else {
+                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaCPU.responder(preguntaMates);
+                }
+
+                if (preguntaMates.evaluarRespuesta(respuesta)) {
+                    jugadores.get(cont).puntuar();
+                }
                 break;
             case 2:
                 MasterMindPregunta preguntaMastermind = new MasterMindPregunta();
+                if (jugadores.get(cont) instanceof HumanoJugador) {
+                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaHumano.responder(preguntaMastermind);
+
+                } else {
+                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaCPU.responder(preguntaMastermind);
+
+                }
+
+                if (preguntaMastermind.evaluarRespuesta(respuesta)) {
+                    jugadores.get(cont).puntuar();
+                }
                 break;
             case 3:
                 GeografiaPregunta preguntaGeografia = new GeografiaPregunta();
+                if (jugadores.get(cont) instanceof HumanoJugador) {
+                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaHumano.responder(preguntaGeografia);
+
+                } else {
+                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaCPU.responder(preguntaGeografia);
+
+                }
+                if (preguntaGeografia.evaluarRespuesta(respuesta)) {
+                    jugadores.get(cont).puntuar();
+                }
                 break;
             case 4:
                 CronometroPregunta preguntaCronometro = new CronometroPregunta();
+                if (jugadores.get(cont) instanceof HumanoJugador) {
+                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaHumano.responder(preguntaCronometro);
+
+                } else {
+                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
+                    respuesta = jugadorRondaCPU.responder(preguntaCronometro);
+
+                }
+                if (preguntaCronometro.evaluarRespuesta(respuesta)) {
+                    jugadores.get(cont).puntuar();
+                }
                 break;
 
             }
         }
-
-        //TODO: Añadir puntos a los jugadores.
 
     }
 

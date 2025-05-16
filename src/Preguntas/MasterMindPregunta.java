@@ -38,6 +38,7 @@ public class MasterMindPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
+
         return false;
     }
 }

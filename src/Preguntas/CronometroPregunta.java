@@ -28,4 +28,5 @@ public class CronometroPregunta implements Pregunta {
     public boolean evaluarRespuesta(String respuesta) {
         return false;
     }
+
 }

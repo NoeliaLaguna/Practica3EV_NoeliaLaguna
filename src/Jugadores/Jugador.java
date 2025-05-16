@@ -17,7 +17,7 @@ public abstract class Jugador {
     }
 
     public void puntuar() {
-
+        puntos++;
     }
 
     public String getNombre() {
