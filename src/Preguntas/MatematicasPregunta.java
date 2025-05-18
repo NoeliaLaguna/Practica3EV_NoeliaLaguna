@@ -63,6 +63,7 @@ public class MatematicasPregunta implements Pregunta {
         ScriptEngine engine = manager.getEngineByName("js");
         try {
             double resultadoCorrecto = Double.parseDouble(engine.eval(operacion).toString());
+            //Excepcion linea 65: Aqui da nullpointer. Cannot invoke "javax.script.ScriptEngine.eval(String)" because "engine" is null.
             double resultadoUsuario = Double.parseDouble(respuesta);
             return resultadoUsuario == resultadoCorrecto;
         } catch (NumberFormatException | ScriptException ex) {

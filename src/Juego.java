@@ -47,37 +47,33 @@ public class Juego {
                 5.- Volver al menu de inicio.
                 """);
 
-        while (!salir) {
-            int opcion = teclado.nextInt();
-            teclado.nextLine();
+        int opcion = teclado.nextInt();
+        teclado.nextLine();
 
-            switch (opcion) {
-            case 1:
-                System.out.println("Has elegido la opción \"Partida rápida\".");
-                this.rondas = Constantes.RONDAS_PARTIDA_RAPIDA;
-                break;
-            case 2:
-                System.out.println("Has elegido la opción \"Partida corta\".");
-                this.rondas = Constantes.RONDAS_PARTIDA_CORTA;
-                ;
-                break;
-            case 3:
-                System.out.println("Has elegido la opción \"Partida normal\".");
-                this.rondas = Constantes.RONDAS_PARTIDA_NORMAL;
-                ;
-                break;
-            case 4:
-                System.out.println("Has elegido la opción \"Partida larga.\".");
-                this.rondas = Constantes.RONDAS_PARTIDA_LARGA;
-                ;
-                break;
-            case 5:
-                System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
-                salir = true;
-                break;
-            }
-
+        switch (opcion) {
+        case 1:
+            System.out.println("Has elegido la opción \"Partida rápida\".");
+            this.rondas = Constantes.RONDAS_PARTIDA_RAPIDA;
+            break;
+        case 2:
+            System.out.println("Has elegido la opción \"Partida corta\".");
+            this.rondas = Constantes.RONDAS_PARTIDA_CORTA;
+            ;
+            break;
+        case 3:
+            System.out.println("Has elegido la opción \"Partida normal\".");
+            this.rondas = Constantes.RONDAS_PARTIDA_NORMAL;
+            ;
+            break;
+        case 4:
+            System.out.println("Has elegido la opción \"Partida larga.\".");
+            this.rondas = Constantes.RONDAS_PARTIDA_LARGA;
+            break;
+        case 5:
+            System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
+            break;
         }
+
     }
 
     private void configurarPartida() throws IOException {
@@ -181,6 +177,7 @@ public class Juego {
         //HECHO: Añadir puntos a los jugadores.
 
         // Con el for nos aseguramos que haya una pregunta para cada jugador.
+        //TODO: Hay que poner mensajes indicando a quien le toca jugar.
         for (int cont = 0; cont < jugadores.size(); cont++) {
             Jugador jugador = jugadores.get(cont);
             Random aleatorio = new Random();
@@ -188,7 +185,7 @@ public class Juego {
             int tipoDePregunta = aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
-            case 1 -> pregunta = new MatematicasPregunta();
+            case 1 -> pregunta = new MatematicasPregunta(); //TODO: Hay que decir que tipo de pregunta ha salido.
             case 2 -> pregunta = new MasterMindPregunta();
             case 3 -> pregunta = new GeografiaPregunta();
             case 4 -> pregunta = new CronometroPregunta();
@@ -199,79 +196,13 @@ public class Juego {
             if (pregunta != null) {
                 pregunta.preguntar();
 
-                for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
+                for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) { //Esto no esta funcionando bien
                     System.out.println("Escribe tu respuesta:");
                     respuesta = jugador.responder(pregunta);
                     acierto = pregunta.evaluarRespuesta(respuesta);
                 }
 
             }
-
-
-            /*switch (tipoDePregunta) {
-            case 1:
-                MatematicasPregunta preguntaMates = new MatematicasPregunta();
-                preguntaMates.preguntar();
-                if (jugadores.get(cont) instanceof HumanoJugador) {
-                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaHumano.responder(preguntaMates);
-                } else {
-                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaCPU.responder(preguntaMates);
-                }
-
-                if (preguntaMates.evaluarRespuesta(respuesta)) {
-                    jugadores.get(cont).puntuar();
-                }
-                break;
-            case 2:
-                MasterMindPregunta preguntaMastermind = new MasterMindPregunta();
-                if (jugadores.get(cont) instanceof HumanoJugador) {
-                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaHumano.responder(preguntaMastermind);
-
-                } else {
-                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaCPU.responder(preguntaMastermind);
-
-                }
-
-                if (preguntaMastermind.evaluarRespuesta(respuesta)) {
-                    jugadores.get(cont).puntuar();
-                }
-                break;
-            case 3:
-                GeografiaPregunta preguntaGeografia = new GeografiaPregunta();
-                if (jugadores.get(cont) instanceof HumanoJugador) {
-                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaHumano.responder(preguntaGeografia);
-
-                } else {
-                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaCPU.responder(preguntaGeografia);
-
-                }
-                if (preguntaGeografia.evaluarRespuesta(respuesta)) {
-                    jugadores.get(cont).puntuar();
-                }
-                break;
-            case 4:
-                CronometroPregunta preguntaCronometro = new CronometroPregunta();
-                if (jugadores.get(cont) instanceof HumanoJugador) {
-                    HumanoJugador jugadorRondaHumano = (HumanoJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaHumano.responder(preguntaCronometro);
-
-                } else {
-                    CPUJugador jugadorRondaCPU = (CPUJugador) jugadores.get(cont);
-                    respuesta = jugadorRondaCPU.responder(preguntaCronometro);
-
-                }
-                if (preguntaCronometro.evaluarRespuesta(respuesta)) {
-                    jugadores.get(cont).puntuar();
-                }
-                break;
-
-            }*/
         }
 
     }

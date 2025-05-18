@@ -28,6 +28,7 @@ public class CPUJugador extends Jugador {
                 e.printStackTrace();
             }
         } else if (p instanceof GeografiaPregunta) {
+            //TODO: Implementar la respuesta de la CPU.
 
         } else if (p instanceof MasterMindPregunta) {
             resultado = String.valueOf(rnd.nextInt(100, 1000));
@@ -36,6 +37,7 @@ public class CPUJugador extends Jugador {
         }
 
         System.out.println(resultado);
+        return resultado;
     }
 
 }

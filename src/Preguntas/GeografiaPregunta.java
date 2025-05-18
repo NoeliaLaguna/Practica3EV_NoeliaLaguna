@@ -22,6 +22,7 @@ public class GeografiaPregunta implements Pregunta {
     private ArrayList<CiudadGeolocalizada> ciudades;
     private ArrayList<CiudadGeolocalizada> ciudadesOpciones;
     private char opcionCorrecta;
+    CiudadGeolocalizada objetivo;
 
     public GeografiaPregunta() {
         this.ciudades = new ArrayList<>();
@@ -73,8 +74,9 @@ public class GeografiaPregunta implements Pregunta {
             indicesCiudades.add(i);
         }
 
+        //TODO: Las ciudades objetivo y las opciones se repiten, arreglar esto.
         int indiceObjetivo = rnd.nextInt(0, indicesCiudades.size());
-        CiudadGeolocalizada objetivo = ciudades.get(indiceObjetivo);
+        this.objetivo = ciudades.get(indiceObjetivo);
         indicesCiudades.remove((Integer) indiceObjetivo);
 
         this.ciudadesOpciones = new ArrayList<>();
@@ -102,6 +104,15 @@ public class GeografiaPregunta implements Pregunta {
 
     }
 
+    private void mostrarDistanciasOpciones() {
+        char opcion = 'A';
+        for (int cont = 0; cont < ciudadesOpciones.size(); cont++) {
+            opcion = (char) (opcion + cont);
+            double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont)); //Falta redondear a 2 decimales.
+            System.out.printf("%s) %s -> %f\n", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
+        }
+    }
+
     /**
      * Metodo para evaluar la respuesta recibida.
      *
@@ -110,13 +121,24 @@ public class GeografiaPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
-        return false;
+        CiudadGeolocalizada ciudadCorrecta = ciudadesOpciones.get(opcionCorrecta - 'A');
 
-        ///  comparapr respuesta con tu char correcto
-
+        /// HECHO: Comparar respuesta con tu char correcto
         // para sacar la respuesta correcta del array de ciudades
         // teniendo el char correcto, por ejemplo C.
-        // imagina que A = 56, B= 57, C = 58.. C-A = 2 -> corresponde con ciudadesOpciones.get('c'-'a')  siempre usa la A para restar porque la A es como tu 0
+        // imagina que A = 56, B= 57, C = 58.. C-A = 2 -> corresponde con ciudadesOpciones.get('c'-'a')
+        // siempre usa la A para restar porque la A es como tu 0
+        String opcionCorrectaString = String.valueOf(opcionCorrecta);
+        mostrarDistanciasOpciones();
+        if (respuesta.equalsIgnoreCase(opcionCorrectaString)) {
+            System.out.printf("Correcto!!! La respuesta es: %s.\n", ciudadCorrecta.getNombre());
+            return true;
+        } else {
+            System.out.printf("No es correcto. La respuesta correcta es: %s.\n", ciudadCorrecta.getNombre());
+            return false;
+        }
+
+        //TODO: Sacar las 4 ciudades de las opciones con si distancia.
 
     }
 
