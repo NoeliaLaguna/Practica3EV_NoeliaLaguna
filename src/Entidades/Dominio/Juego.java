@@ -194,7 +194,7 @@ public class Juego {
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = aleatorio.nextInt(1, 5);
+            int tipoDePregunta = 2; //aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta(); //TODO: Hay que decir que tipo de pregunta ha salido.
@@ -205,13 +205,17 @@ public class Juego {
             }
 
             boolean acierto = false;
+
             if (pregunta != null) {
                 pregunta.preguntar();
 
-                for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) { //Esto no esta funcionando bien
+                for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
                     System.out.println("Escribe tu respuesta:");
                     respuesta = jugador.responder(pregunta);
                     acierto = pregunta.evaluarRespuesta(respuesta);
+                    if (acierto) {
+                        jugador.puntuar();
+                    }
                 }
 
             }
