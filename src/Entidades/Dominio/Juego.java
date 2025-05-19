@@ -1,8 +1,6 @@
-import Gestores.JugadorGestor;
-import Jugadores.CPUJugador;
-import Jugadores.HumanoJugador;
-import Jugadores.Jugador;
-import Preguntas.*;
+package Entidades.Dominio;
+
+import Entidades.Tipos.*;
 import Utils.Constantes;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package Preguntas;
+package Entidades.Tipos;
 
 import Utils.Constantes;
 
@@ -8,7 +8,7 @@ import javax.script.ScriptException;
 import java.util.Random;
 
 /**
- * Clase para implementar la interfaz Preguntas.Pregunta.
+ * Clase para implementar la interfaz Entidades.Tipos.Pregunta.
  * Se implementan los metodos preguntar y evaluar respuesta.
  *
  * @author Noelia

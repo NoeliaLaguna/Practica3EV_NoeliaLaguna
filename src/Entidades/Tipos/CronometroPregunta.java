@@ -1,7 +1,7 @@
-package Preguntas;
+package Entidades.Tipos;
 
 /**
- * Clase para implementar la interfaz Preguntas.Pregunta.
+ * Clase para implementar la interfaz Entidades.Tipos.Pregunta.
  * Se implementan los metodos preguntar y evaluar respuesta.
  *
  * @author Noelia

@@ -1,6 +1,4 @@
-package Jugadores;
-
-import Preguntas.Pregunta;
+package Entidades.Tipos;
 
 public abstract class Jugador {
     private String nombre;

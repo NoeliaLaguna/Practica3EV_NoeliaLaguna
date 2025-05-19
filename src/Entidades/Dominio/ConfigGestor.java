@@ -1,4 +1,4 @@
-package Gestores;
+package Entidades.Dominio;
 
 public class ConfigGestor {
     public Configuracion leer() {

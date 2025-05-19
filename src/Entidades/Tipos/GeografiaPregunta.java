@@ -1,6 +1,5 @@
-package Preguntas;
+package Entidades.Tipos;
 
-import Entidades.Tipos.CiudadGeolocalizada;
 import Utils.Constantes;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Clase para implementar la interfaz Preguntas.Pregunta.
+ * Clase para implementar la interfaz Entidades.Tipos.Pregunta.
  * Se implementan los metodos preguntar y evaluar respuesta.
  *
  * @author Noelia

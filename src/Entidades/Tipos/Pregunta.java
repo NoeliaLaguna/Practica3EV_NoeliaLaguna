@@ -1,4 +1,4 @@
-package Preguntas;
+package Entidades.Tipos;
 
 public interface Pregunta {
 

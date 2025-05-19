@@ -1,7 +1,6 @@
-import Gestores.ConfigGestor;
-import Gestores.JugadorGestor;
-import Gestores.LogGestor;
-import Jugadores.HumanoJugador;
+package Entidades.Dominio;
+
+import Entidades.Tipos.HumanoJugador;
 
 import java.io.IOException;
 import java.util.Scanner;

@@ -1,6 +1,4 @@
-package Jugadores;
-
-import Preguntas.*;
+package Entidades.Tipos;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

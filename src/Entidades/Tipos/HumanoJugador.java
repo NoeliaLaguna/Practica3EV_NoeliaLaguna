@@ -1,6 +1,4 @@
-package Jugadores;
-
-import Preguntas.Pregunta;
+package Entidades.Tipos;
 
 import java.util.Scanner;
 
