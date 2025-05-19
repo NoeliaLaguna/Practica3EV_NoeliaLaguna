@@ -1,8 +1,10 @@
 package Entidades.Tipos;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import de.congrace.exp4j.Calculable;
+import de.congrace.exp4j.ExpressionBuilder;
+import de.congrace.exp4j.UnknownFunctionException;
+import de.congrace.exp4j.UnparsableExpressionException;
+
 import java.util.Random;
 
 public class CPUJugador extends Jugador {
@@ -16,21 +18,27 @@ public class CPUJugador extends Jugador {
     @Override
     public String responder(Pregunta p) {
         String resultado = "";
-        if (p instanceof MatematicasPregunta) {
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("js");
+        if (p instanceof MatematicasPregunta pregunta) {
+            Calculable e = null;
             try {
-                double resultadoCorrecto = Double.parseDouble(engine.eval(((MatematicasPregunta) p).getOperacion()).toString());
-                resultado = String.valueOf(resultadoCorrecto);
-            } catch (ScriptException e) {
-                e.printStackTrace();
+                e = new ExpressionBuilder(pregunta.getOperacion()).build();
+            } catch (UnknownFunctionException ex) {
+                System.err.println("Función desconocida, no es posible calcular." + ex);
+                ex.printStackTrace();
+            } catch (UnparsableExpressionException ex) {
+                System.err.println("No es posible parsear la funcion. " + ex);
+                ex.printStackTrace();
             }
-        } else if (p instanceof GeografiaPregunta) {
+            double result = e.calculate();
+            int resultInt = (int) result;
+            System.out.printf("El resultado es %d", resultInt);
+
+        } else if (p instanceof GeografiaPregunta pregunta) {
             //TODO: Implementar la respuesta de la CPU.
 
-        } else if (p instanceof MasterMindPregunta) {
+        } else if (p instanceof MasterMindPregunta pregunta) {
             resultado = String.valueOf(rnd.nextInt(100, 1000));
-        } else if (p instanceof CronometroPregunta) {
+        } else if (p instanceof CronometroPregunta pregunta) {
             return "0";
         }
 

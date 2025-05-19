@@ -31,9 +31,6 @@ public class HistorialGestor {
 
     public List<String> listar() throws IOException {
         List<String> listaPartidasString = Files.readAllLines(rutaAlArchivo);
-        for (String partida : listaPartidasString) {
-            listaPartidasString.add(partida);
-        }
         return listaPartidasString;
     }
 

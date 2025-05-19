@@ -161,7 +161,9 @@ public class Juego {
         //jugadores.sort(); //No recuerdo bien como se usaba el Comparator.
 
         for (int cont = 0; cont <= this.rondas; cont++) {
+            System.out.printf("***INICIO DE LA RONDA %d***\n", (cont + 1));
             this.jugarRonda();
+            System.out.printf("***FIN DE LA RONDA %d***\n", (cont + 1));
         }
 
     }
@@ -171,7 +173,12 @@ public class Juego {
         //TODO: Recuento final de puntos. Mostrar por pantalla.
 
         //TODO: Añadir partida a Histórico. Para hacerlo he tenido que añadir al constructor de Juego todos los gestores.
-        gestorHistorial.registrar(this);
+        try {
+            gestorHistorial.registrar(this);
+        } catch (IOException e) {
+            System.err.println("Error al registrar la partida." + e);
+            e.printStackTrace();
+        }
 
     }
 
@@ -183,6 +190,8 @@ public class Juego {
         //TODO: Hay que poner mensajes indicando a quien le toca jugar.
         for (int cont = 0; cont < jugadores.size(); cont++) {
             Jugador jugador = jugadores.get(cont);
+            System.out.printf("Es el turno del jugador: %s \n", jugadores.get(cont).getNombre());
+
             Random aleatorio = new Random();
             String respuesta;
             int tipoDePregunta = aleatorio.nextInt(1, 5);

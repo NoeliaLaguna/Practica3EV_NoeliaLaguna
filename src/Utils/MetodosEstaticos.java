@@ -27,4 +27,9 @@ public class MetodosEstaticos {
         } while (!comprobarDigito(opcionescrita));
         return opcionescrita;
     }
+
+    public static double redondearADosDecimales(double numero) {
+        numero = Math.round(numero * 100.0) / 100.0;
+        return numero;
+    }
 }

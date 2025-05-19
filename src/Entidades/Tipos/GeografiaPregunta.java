@@ -1,6 +1,7 @@
 package Entidades.Tipos;
 
 import Utils.Constantes;
+import Utils.MetodosEstaticos;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -108,7 +109,9 @@ public class GeografiaPregunta implements Pregunta {
         for (int cont = 0; cont < ciudadesOpciones.size(); cont++) {
             opcion = (char) (opcion + cont);
             double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont)); //Falta redondear a 2 decimales.
-            System.out.printf("%s) %s -> %f\n", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
+            double distanciaDosDecimales = MetodosEstaticos.redondearADosDecimales(distancia);
+
+            System.out.println(opcion + ") " + ciudadesOpciones.get(cont).getNombre() + " -> " + distanciaDosDecimales);
         }
     }
 
@@ -120,6 +123,7 @@ public class GeografiaPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
+        //TODO: Esta linea da error de indexOutOfBounds
         CiudadGeolocalizada ciudadCorrecta = ciudadesOpciones.get(opcionCorrecta - 'A');
 
         /// HECHO: Comparar respuesta con tu char correcto
@@ -128,6 +132,7 @@ public class GeografiaPregunta implements Pregunta {
         // imagina que A = 56, B= 57, C = 58.. C-A = 2 -> corresponde con ciudadesOpciones.get('c'-'a')
         // siempre usa la A para restar porque la A es como tu 0
         String opcionCorrectaString = String.valueOf(opcionCorrecta);
+        //HECHO: Sacar las 4 ciudades de las opciones con su distancia.
         mostrarDistanciasOpciones();
         if (respuesta.equalsIgnoreCase(opcionCorrectaString)) {
             System.out.printf("Correcto!!! La respuesta es: %s.\n", ciudadCorrecta.getNombre());
@@ -136,8 +141,6 @@ public class GeografiaPregunta implements Pregunta {
             System.out.printf("No es correcto. La respuesta correcta es: %s.\n", ciudadCorrecta.getNombre());
             return false;
         }
-
-        //TODO: Sacar las 4 ciudades de las opciones con si distancia.
 
     }
 

@@ -11,14 +11,12 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner teclado = new Scanner(System.in);
-        //declarar resto de gestores
         JugadorGestor gestorJugador;
         HistorialGestor gestorhistorial;
         LogGestor gestorLogs;
         ConfigGestor gestorConfig;
 
         try {
-            //crear resto de gestores
             gestorJugador = new JugadorGestor();
             gestorhistorial = new HistorialGestor();
             gestorConfig = new ConfigGestor();
@@ -65,9 +63,6 @@ public class Main {
                     System.err.println("Error al iniciar el juego.");
                 }
 
-                //juego.empezar(teclado);
-                //elegirTipoDePartida(teclado, juego); //No sé si debería meterlo en juego o dejarlo aqui.
-
                 break;
             case 2:
                 System.out.println("Has elegido la opción \"Ver el Ranking\".");
@@ -75,7 +70,12 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Has elegido la opción \"Ver el histórico de partidas\".");
-                gestorhistorial.mostrar();
+                try {
+                    gestorhistorial.mostrar();
+                } catch (IOException e) {
+                    System.err.println("Error al intentar mostrar el historial." + e);
+                    e.printStackTrace();
+                }
                 break;
             case 4:
                 System.out.println("Has elegido la opción \"Acceder al submenu de jugadores\".");
@@ -83,7 +83,7 @@ public class Main {
                 try {
                     accederSubmenuJugadores(gestorJugador);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
                 break;
             case 5:

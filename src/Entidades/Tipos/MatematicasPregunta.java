@@ -1,10 +1,11 @@
 package Entidades.Tipos;
 
 import Utils.Constantes;
+import de.congrace.exp4j.Calculable;
+import de.congrace.exp4j.ExpressionBuilder;
+import de.congrace.exp4j.UnknownFunctionException;
+import de.congrace.exp4j.UnparsableExpressionException;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.util.Random;
 
 /**
@@ -59,18 +60,30 @@ public class MatematicasPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
+        //He cambiado esto para hacerlo con la librería exp4j porque el otro código fallaba.
+        int respuestaInt = Integer.parseInt(respuesta);
+
+        Calculable e = null;
         try {
-            double resultadoCorrecto = Double.parseDouble(engine.eval(operacion).toString());
-            //Excepcion linea 65: Aqui da nullpointer. Cannot invoke "javax.script.ScriptEngine.eval(String)" because "engine" is null.
-            double resultadoUsuario = Double.parseDouble(respuesta);
-            return resultadoUsuario == resultadoCorrecto;
-        } catch (NumberFormatException | ScriptException ex) {
+            e = new ExpressionBuilder(operacion).build();
+        } catch (UnknownFunctionException ex) {
+            System.err.println("Función desconocida, no es posible calcular." + ex);
             ex.printStackTrace();
-            return false;
+        } catch (UnparsableExpressionException ex) {
+            System.err.println("No es posible parsear la funcion. " + ex);
+            ex.printStackTrace();
         }
 
+        double result = e.calculate();
+        int resultInt = (int) result;
+
+        if (respuestaInt == result) {
+            System.out.printf("Correcto!! el resultado es %d \n", resultInt);
+        } else {
+            System.out.printf("Incorrecto!! el resultado es %d \n", resultInt);
+        }
+
+        return respuestaInt == resultInt;
     }
 
     public String getOperacion() {
