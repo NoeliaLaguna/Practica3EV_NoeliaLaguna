@@ -58,7 +58,7 @@ public class Main {
                 }
                 try {
                     System.out.println("Has elegido la opción \"Jugar una partida\"");
-                    Juego juego = new Juego(gestorJugador);
+                    Juego juego = new Juego(gestorJugador, gestorhistorial, gestorConfig, gestorLogs);
 
                     juego.ejecutar();
                 } catch (IOException e) {
@@ -75,6 +75,7 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Has elegido la opción \"Ver el histórico de partidas\".");
+                gestorhistorial.mostrar();
                 break;
             case 4:
                 System.out.println("Has elegido la opción \"Acceder al submenu de jugadores\".");

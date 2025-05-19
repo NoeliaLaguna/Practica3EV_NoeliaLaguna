@@ -16,7 +16,7 @@ public class JugadorGestor {
     private final Path rutaAlArchivo;
 
     public JugadorGestor() throws IOException {
-        this.rutaAlArchivo = Paths.get(Constantes.FicheroJugadores); //Revisar esto, da error de accessDeniedException
+        this.rutaAlArchivo = Paths.get(Constantes.FICHERO_JUGADORES);
         if (!Files.exists(this.rutaAlArchivo)) {
             Files.createFile(this.rutaAlArchivo);
         }

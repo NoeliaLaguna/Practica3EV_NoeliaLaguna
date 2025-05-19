@@ -18,11 +18,16 @@ public class Juego {
     private int rondas;
     private boolean depuracion;
     private JugadorGestor jugadorGestor;
+    private HistorialGestor gestorHistorial;
+    private ConfigGestor gestorConfig;
+    private LogGestor gestorLogs;
     private ArrayList<HumanoJugador> jugadoresHumanosDisponibles;
 
-    public Juego(JugadorGestor jugadorGestor) {
+    public Juego(JugadorGestor jugadorGestor, HistorialGestor gestorHistorial, ConfigGestor gestorConfig, LogGestor gestorLogs) {
         this.jugadorGestor = jugadorGestor;
-
+        this.gestorHistorial = gestorHistorial;
+        this.gestorConfig = gestorConfig;
+        this.gestorLogs = gestorLogs;
     }
 
     public void ejecutar() throws IOException {
@@ -88,7 +93,6 @@ public class Juego {
 
         } while (numJugadores > 4 || numJugadores < 2);
 
-        //int limiteJugadoresHumanos = this.jugadoresHumanosDisponibles.size() >= numJugadores ? numJugadores : numJugadores - this.jugadoresHumanosDisponibles.size();
         int limiteJugadoresHumanos = 0;
         if (this.jugadoresHumanosDisponibles.size() >= numJugadores) {
             limiteJugadoresHumanos = numJugadores;
@@ -166,7 +170,8 @@ public class Juego {
 
         //TODO: Recuento final de puntos. Mostrar por pantalla.
 
-        //TODO: Añadir partida a Histórico.
+        //TODO: Añadir partida a Histórico. Para hacerlo he tenido que añadir al constructor de Juego todos los gestores.
+        gestorHistorial.registrar(this);
 
     }
 
