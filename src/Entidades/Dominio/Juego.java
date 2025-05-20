@@ -82,7 +82,7 @@ public class Juego {
         int jugadoresHumanos = -1;
         int jugadoresCPU = 0;
 
-        //TODO:controlar si se introduce numero decimal.
+        //HECHO:controlar si se introduce numero decimal.
         int numJugadores = -1;
         do {
             System.out.println("Indica número de jugadores entre 2 y 4");
@@ -192,7 +192,7 @@ public class Juego {
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = 3; //aleatorio.nextInt(1, 5);
+            int tipoDePregunta = aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta(); //HECHO: Hay que decir que tipo de pregunta ha salido.
