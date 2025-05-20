@@ -4,10 +4,7 @@ import Entidades.Tipos.*;
 import Utils.Constantes;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static Utils.MetodosEstaticos.stringConComprobacionDigit;
 
@@ -37,7 +34,7 @@ public class Juego {
     }
 
     private void elegirTipoPartida() {
-        // TODO: Crear el menu de elección de partida.
+        // HECHO: Crear el menu de elección de partida.
         Scanner teclado = new Scanner(System.in);
 
         boolean salir = false;
@@ -157,8 +154,8 @@ public class Juego {
 
     private void empezar() throws IOException {
 
-        //TODO: Ordenar jugadores de forma aleatoria.
-        //jugadores.sort(); //No recuerdo bien como se usaba el Comparator.
+        //HECHO: Ordenar jugadores de forma aleatoria.
+        Collections.shuffle(jugadores);
 
         for (int cont = 0; cont <= this.rondas; cont++) {
             System.out.printf("***INICIO DE LA RONDA %d***\n", (cont + 1));
@@ -172,7 +169,7 @@ public class Juego {
 
         //TODO: Recuento final de puntos. Mostrar por pantalla.
 
-        //TODO: Añadir partida a Histórico. Para hacerlo he tenido que añadir al constructor de Juego todos los gestores.
+        //HECHO: Añadir partida a Histórico. Para hacerlo he tenido que añadir al constructor de Juego todos los gestores.
         try {
             gestorHistorial.registrar(this);
         } catch (IOException e) {
@@ -187,17 +184,17 @@ public class Juego {
         //HECHO: Añadir puntos a los jugadores.
 
         // Con el for nos aseguramos que haya una pregunta para cada jugador.
-        //TODO: Hay que poner mensajes indicando a quien le toca jugar.
+        //HECHO: Hay que poner mensajes indicando a quien le toca jugar.
         for (int cont = 0; cont < jugadores.size(); cont++) {
             Jugador jugador = jugadores.get(cont);
             System.out.printf("Es el turno del jugador: %s \n", jugadores.get(cont).getNombre());
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = 2; //aleatorio.nextInt(1, 5);
+            int tipoDePregunta = aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
-            case 1 -> pregunta = new MatematicasPregunta(); //TODO: Hay que decir que tipo de pregunta ha salido.
+            case 1 -> pregunta = new MatematicasPregunta(); //HECHO: Hay que decir que tipo de pregunta ha salido.
             case 2 -> pregunta = new MasterMindPregunta();
             case 3 -> pregunta = new GeografiaPregunta();
             case 4 -> pregunta = new CronometroPregunta();

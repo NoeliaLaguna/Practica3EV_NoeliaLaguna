@@ -52,6 +52,7 @@ public class MasterMindPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
+        
         boolean acierto = false;
 
         char[] arrayRespuesta = respuesta.toCharArray();
@@ -60,35 +61,16 @@ public class MasterMindPregunta implements Pregunta {
         int contNumeroYPosicion = 0;
         int contSoloposicion = 0;
 
-        if (arrayRespuesta[0] == arrayNumero[0] && arrayRespuesta[1] == arrayNumero[1] && arrayRespuesta[2] == arrayNumero[2]) {
-            acierto = true;
-        }
-        if (arrayRespuesta[0] == arrayNumero[0]) {
-            contNumeroYPosicion++;
-        }
-        if (arrayRespuesta[0] == arrayNumero[1]) {
-            contSoloposicion++;
-        }
-        if (arrayRespuesta[0] == arrayNumero[2]) {
-            contSoloposicion++;
-        }
-        if (arrayRespuesta[1] == arrayNumero[0]) {
-            contSoloposicion++;
-        }
-        if (arrayRespuesta[1] == arrayNumero[1]) {
-            contNumeroYPosicion++;
-        }
-        if (arrayRespuesta[1] == arrayNumero[2]) {
-            contSoloposicion++;
-        }
-        if (arrayRespuesta[2] == arrayNumero[0]) {
-            contSoloposicion++;
-        }
-        if (arrayRespuesta[2] == arrayNumero[1]) {
-            contSoloposicion++;
-        }
-        if (arrayRespuesta[2] == arrayNumero[2]) {
-            contNumeroYPosicion++;
+        for (int i = 0; i < arrayRespuesta.length; i++) {
+            if (arrayRespuesta[i] == arrayNumero[i]) {
+                contNumeroYPosicion++;
+            } else {
+                for (int cont = 0; cont < arrayNumero.length; cont++) {
+                    if (i != cont && arrayRespuesta[i] == arrayNumero[cont]) {
+                        contSoloposicion++;
+                    }
+                }
+            }
         }
 
         if (acierto) {
@@ -102,5 +84,6 @@ public class MasterMindPregunta implements Pregunta {
         }
 
         return acierto;
+
     }
 }

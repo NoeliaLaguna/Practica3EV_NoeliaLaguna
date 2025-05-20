@@ -83,8 +83,8 @@ public class GeografiaPregunta implements Pregunta {
 
         for (int i = 0; i < 4; i++) {
             int indiceOpciones = rnd.nextInt(0, indicesCiudades.size());
-            ciudadesOpciones.add(ciudades.get(indiceOpciones));
-            indicesCiudades.remove((Integer) indiceOpciones);
+            ciudadesOpciones.add(ciudades.get(indicesCiudades.get(indiceOpciones)));
+            indicesCiudades.remove(indicesCiudades.get(indiceOpciones));
         }
 
         System.out.printf("Ciudad objetivo: %s\n", objetivo.getNombre());
@@ -92,14 +92,14 @@ public class GeografiaPregunta implements Pregunta {
         double distanciaMinima = Double.POSITIVE_INFINITY;
 
         for (int cont = 0; cont < ciudadesOpciones.size(); cont++) {
-            opcion = (char) (opcion + cont);
+
             System.out.printf("%s) %s\n", opcion, ciudadesOpciones.get(cont).getNombre());
             double distanciaAObjetivo = calcularDistancia(objetivo, ciudadesOpciones.get(cont));
             if (distanciaAObjetivo < distanciaMinima) {
                 distanciaMinima = distanciaAObjetivo;
                 this.opcionCorrecta = opcion;
             }
-
+            opcion++;
         }
 
     }
@@ -107,18 +107,19 @@ public class GeografiaPregunta implements Pregunta {
     private void mostrarDistanciasOpciones() {
         char opcion = 'A';
         for (int cont = 0; cont < ciudadesOpciones.size(); cont++) {
-            opcion = (char) (opcion + cont);
+
             double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont)); //Falta redondear a 2 decimales.
             double distanciaDosDecimales = MetodosEstaticos.redondearADosDecimales(distancia);
 
             System.out.println(opcion + ") " + ciudadesOpciones.get(cont).getNombre() + " -> " + distanciaDosDecimales);
+            opcion++;
         }
     }
 
     /**
      * Metodo para evaluar la respuesta recibida.
      *
-     * @param respuesta
+     * @param respuesta Se introduce la respuesta tipo String para evaluar.
      * @return boolean
      */
     @Override
