@@ -74,7 +74,7 @@ public class GeografiaPregunta implements Pregunta {
             indicesCiudades.add(i);
         }
 
-        //TODO: Las ciudades objetivo y las opciones se repiten, arreglar esto.
+        //HECHO: Las ciudades objetivo y las opciones se repiten, arreglar esto.
         int indiceObjetivo = rnd.nextInt(0, indicesCiudades.size());
         this.objetivo = ciudades.get(indiceObjetivo);
         indicesCiudades.remove((Integer) indiceObjetivo);

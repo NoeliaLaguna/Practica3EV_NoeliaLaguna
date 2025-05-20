@@ -35,7 +35,7 @@ public class CPUJugador extends Jugador {
             System.out.printf("El resultado es %d", resultInt);
 
         } else if (p instanceof GeografiaPregunta pregunta) {
-            //TODO: Implementar la respuesta de la CPU.
+            //HECHO: Implementar la respuesta de la CPU.
             ArrayList<Character> opciones = new ArrayList<Character>();
             Random numRandom = new Random();
             char opcion = 'A';
