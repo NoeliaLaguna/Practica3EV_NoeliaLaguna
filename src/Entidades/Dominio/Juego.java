@@ -47,8 +47,8 @@ public class Juego {
                 5.- Volver al menu de inicio.
                 """);
 
-        int opcion = teclado.nextInt();
-        teclado.nextLine();
+        String opcionEscrita = stringConComprobacionDigitNoDecimales();
+        int opcion = Integer.parseInt(opcionEscrita);
 
         switch (opcion) {
         case 1:
@@ -132,13 +132,13 @@ public class Juego {
             } while (opcionLista > jugadoresHumanosDisponibles.size() || opcionLista <= 0);
 
             while (opcionAntigua == opcionLista) {
-                System.out.println("Esa opción ya la has elegido. Recuerda que no se puede repetir. Por favor elije otro numero.");
+                System.out.println("Esa opción ya la has elegido. Recuerda que no se puede repetir. Por favor elige otro numero.");
                 opcionEscrita = stringConComprobacionDigitNoDecimales();
                 opcionLista = Integer.parseInt(opcionEscrita);
             }
             HumanoJugador jugadorAAnyadir = jugadoresHumanosDisponibles.get(opcionLista - 1);
             jugadores.add(jugadorAAnyadir);
-            System.out.println("Jugador añadido correctamente a la partida.");
+            System.out.printf("El jugador %s añadido correctamente a la partida. \n\n", jugadorAAnyadir.getNombre());
             opcionAntigua = opcionLista;
 
         }
