@@ -5,6 +5,7 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class CPUJugador extends Jugador {
@@ -35,6 +36,16 @@ public class CPUJugador extends Jugador {
 
         } else if (p instanceof GeografiaPregunta pregunta) {
             //TODO: Implementar la respuesta de la CPU.
+            ArrayList<Character> opciones = new ArrayList<Character>();
+            Random numRandom = new Random();
+            char opcion = 'A';
+            for (int cont = 0; cont < pregunta.getCiudadesOpciones().size(); cont++) {
+                opciones.add(opcion);
+                opcion++;
+            }
+            int opcionElegida = numRandom.nextInt(0, 5);
+
+            resultado = String.valueOf(opciones.get(opcionElegida));
 
         } else if (p instanceof MasterMindPregunta pregunta) {
             resultado = String.valueOf(rnd.nextInt(100, 1000));

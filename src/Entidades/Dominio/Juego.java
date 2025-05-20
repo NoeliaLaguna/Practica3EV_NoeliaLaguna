@@ -98,11 +98,11 @@ public class Juego {
         }
 
         do {
-            System.out.printf("Indica número de jugadores humanos entre 2 y %d\n", limiteJugadoresHumanos);
+            System.out.printf("Indica número de jugadores humanos entre 1 y %d\n", limiteJugadoresHumanos);
 
             String opcionEscrita = stringConComprobacionDigit();
             jugadoresHumanos = Integer.parseInt(opcionEscrita);
-        } while (jugadoresHumanos > numJugadores || jugadoresHumanos < 2);
+        } while (jugadoresHumanos > numJugadores || jugadoresHumanos < 1);
 
         if (jugadoresHumanos < numJugadores) {
             jugadoresCPU = numJugadores - jugadoresHumanos;
@@ -191,7 +191,7 @@ public class Juego {
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = aleatorio.nextInt(1, 5);
+            int tipoDePregunta = 3; //aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta(); //HECHO: Hay que decir que tipo de pregunta ha salido.

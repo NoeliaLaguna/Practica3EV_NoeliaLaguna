@@ -145,4 +145,19 @@ public class GeografiaPregunta implements Pregunta {
 
     }
 
+    public ArrayList<CiudadGeolocalizada> getCiudades() {
+        return ciudades;
+    }
+
+    public ArrayList<CiudadGeolocalizada> getCiudadesOpciones() {
+        return ciudadesOpciones;
+    }
+
+    public char getOpcionCorrecta() {
+        return opcionCorrecta;
+    }
+
+    public CiudadGeolocalizada getObjetivo() {
+        return objetivo;
+    }
 }
