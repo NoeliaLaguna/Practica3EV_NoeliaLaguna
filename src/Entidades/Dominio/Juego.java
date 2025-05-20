@@ -6,7 +6,7 @@ import Utils.Constantes;
 import java.io.IOException;
 import java.util.*;
 
-import static Utils.MetodosEstaticos.stringConComprobacionDigit;
+import static Utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
 public class Juego {
 
@@ -82,10 +82,11 @@ public class Juego {
         int jugadoresHumanos = -1;
         int jugadoresCPU = 0;
 
+        //TODO:controlar si se introduce numero decimal.
         int numJugadores = -1;
         do {
             System.out.println("Indica número de jugadores entre 2 y 4");
-            String opcionEscrita = stringConComprobacionDigit();
+            String opcionEscrita = stringConComprobacionDigitNoDecimales();
             numJugadores = Integer.parseInt(opcionEscrita);
 
         } while (numJugadores > 4 || numJugadores < 2);
@@ -100,7 +101,7 @@ public class Juego {
         do {
             System.out.printf("Indica número de jugadores humanos entre 1 y %d\n", limiteJugadoresHumanos);
 
-            String opcionEscrita = stringConComprobacionDigit();
+            String opcionEscrita = stringConComprobacionDigitNoDecimales();
             jugadoresHumanos = Integer.parseInt(opcionEscrita);
         } while (jugadoresHumanos > numJugadores || jugadoresHumanos < 1);
 
@@ -126,13 +127,13 @@ public class Juego {
                 jugadorGestor.mostrar();
                 System.out.println("Elige un jugador de los que están registrados para jugar, indicando el número en la lista.");
                 System.out.println("****Recuerda que no se puede repetir el jugador que ya has elegido.****");
-                opcionEscrita = stringConComprobacionDigit();
+                opcionEscrita = stringConComprobacionDigitNoDecimales();
                 opcionLista = Integer.parseInt(opcionEscrita);
             } while (opcionLista > jugadoresHumanosDisponibles.size() || opcionLista <= 0);
 
             while (opcionAntigua == opcionLista) {
                 System.out.println("Esa opción ya la has elegido. Recuerda que no se puede repetir. Por favor elije otro numero.");
-                opcionEscrita = stringConComprobacionDigit();
+                opcionEscrita = stringConComprobacionDigitNoDecimales();
                 opcionLista = Integer.parseInt(opcionEscrita);
             }
             HumanoJugador jugadorAAnyadir = jugadoresHumanosDisponibles.get(opcionLista - 1);

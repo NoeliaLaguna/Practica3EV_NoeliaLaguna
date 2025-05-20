@@ -5,7 +5,7 @@ import Entidades.Tipos.HumanoJugador;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static Utils.MetodosEstaticos.stringConComprobacionDigit;
+import static Utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
 public class Main {
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class Main {
                     3.- Ver el histórico de partidas.
                     4.- Acceder al submenu de Jugadores.
                     5.- Salir""");
-            String opcionEscrita = stringConComprobacionDigit();
+            String opcionEscrita = stringConComprobacionDigitNoDecimales();
             int opcion = Integer.parseInt(opcionEscrita);
 
             switch (opcion) {
@@ -108,7 +108,7 @@ public class Main {
                 3.- Eliminar jugador: permite eliminar del sistema a un jugador registrado.\s
                 4.- Volver: vuelve al menú principal.""");
 
-        String opcionEscrita = stringConComprobacionDigit();
+        String opcionEscrita = stringConComprobacionDigitNoDecimales();
         opcion = Integer.parseInt(opcionEscrita);
 
         switch (opcion) {

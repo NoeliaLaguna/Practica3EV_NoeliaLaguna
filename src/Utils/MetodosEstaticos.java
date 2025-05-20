@@ -3,7 +3,7 @@ package Utils;
 import java.util.Scanner;
 
 public class MetodosEstaticos {
-    public static boolean comprobarDigito(String opcionescrita) {
+    public static boolean esUnNumero(String opcionescrita) {
         boolean esUnNumero = false;
         opcionescrita.toCharArray();
         for (int cont = 0; cont < opcionescrita.length(); cont++) {
@@ -16,15 +16,32 @@ public class MetodosEstaticos {
         return esUnNumero;
     }
 
-    public static String stringConComprobacionDigit() {
+    /**
+     * @param opcionescrita
+     * @return boolean tieneDecimales
+     */
+    public static boolean tieneDecimales(String opcionescrita) {
+        boolean tieneDecimales = false;
+        if (opcionescrita.contains(".") || opcionescrita.contains(",")) {
+            tieneDecimales = true;
+        }
+        return !tieneDecimales;
+    }
+
+    public static String stringConComprobacionDigitNoDecimales() {
         Scanner teclado = new Scanner(System.in);
         String opcionescrita;
         do {
             opcionescrita = teclado.nextLine();
-            if (!comprobarDigito(opcionescrita)) {
+            if (!esUnNumero(opcionescrita)) {
                 System.out.println("El valor introducido no es un número. Por favor, introduce un número.");
             }
-        } while (!comprobarDigito(opcionescrita));
+
+            if (!tieneDecimales(opcionescrita)) {
+                System.out.println("El valor introducido tiene decimales. Por favor, introduce un número entero.");
+            }
+
+        } while (!esUnNumero(opcionescrita) || !tieneDecimales(opcionescrita));
         return opcionescrita;
     }
 
