@@ -43,7 +43,7 @@ public class CPUJugador extends Jugador {
                 opciones.add(opcion);
                 opcion++;
             }
-            int opcionElegida = numRandom.nextInt(0, 5);
+            int opcionElegida = numRandom.nextInt(0, pregunta.getCiudadesOpciones().size());
 
             resultado = String.valueOf(opciones.get(opcionElegida));
 

@@ -221,4 +221,13 @@ public class Juego {
 
     }
 
+    @Override
+    public String toString() {
+        List<String> puntuaciones = new ArrayList<>();
+        for (Jugador j : this.jugadores) {
+            puntuaciones.add(j.getNombre() + ":" + j.getPuntos());
+        }
+        return String.join(",", puntuaciones);
+    }
+
 }

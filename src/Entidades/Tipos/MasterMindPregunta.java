@@ -1,5 +1,9 @@
 package Entidades.Tipos;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Clase para implementar la interfaz Entidades.Tipos.Pregunta.
  * Se implementan los metodos preguntar y evaluar respuesta.
@@ -28,18 +32,18 @@ public class MasterMindPregunta implements Pregunta {
 
         System.out.println("***Te ha tocado la pregunta MASTERMIND.*** \n" + "Tienes que decir un numero de 3 cifras y te diré cuántas cifras están correctamente ubicadas y " + "cuántas cifras están correctas pero mal ubicadas.");
 
-        numeroSecreto = (int) (Math.random() * 1000);
-        String numeroEnString = String.valueOf(numeroSecreto);
-        char[] arrayDeNumeros = numeroEnString.toCharArray();
-        while (arrayDeNumeros.length < 3) {
-            numeroSecreto = (int) (Math.random() * 1000);
-            numeroEnString = String.valueOf(numeroSecreto);
-            arrayDeNumeros = numeroEnString.toCharArray();
+        String[] arrayDeNumeros = new String[3];
+        Random rnd = new Random();
+
+        List<String> numerosDisponibles = new ArrayList<>();
+        for (int cont = 0; cont < 10; cont++) {
+            numerosDisponibles.add("cont");
         }
-        while (arrayDeNumeros[0] == arrayDeNumeros[1] || arrayDeNumeros[0] == arrayDeNumeros[2] || arrayDeNumeros[1] == arrayDeNumeros[2]) {
-            numeroSecreto = (int) (Math.random() * 1000);
-            numeroEnString = String.valueOf(numeroSecreto);
-            arrayDeNumeros = numeroEnString.toCharArray();
+
+        for (int i = 0; i < arrayDeNumeros.length; i++) {
+            int indice = rnd.nextInt(0, numerosDisponibles.size());
+            arrayDeNumeros[i] = numerosDisponibles.get(indice);
+            numerosDisponibles.remove(indice);
         }
 
     }
@@ -52,7 +56,7 @@ public class MasterMindPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
-        
+
         boolean acierto = false;
 
         char[] arrayRespuesta = respuesta.toCharArray();

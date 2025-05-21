@@ -1,9 +1,7 @@
 package Entidades.Tipos;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Clase para implementar la interfaz Entidades.Tipos.Pregunta.
@@ -15,8 +13,9 @@ import java.util.Scanner;
 public class CronometroPregunta implements Pregunta {
 
     int segundos;
-    LocalTime inicio;
-    LocalTime fin;
+    private LocalTime inicio;
+    private LocalTime fin;
+    private final long margen = 500;
 
     @Override
     public int getNumeroIntentos() {
@@ -41,23 +40,39 @@ public class CronometroPregunta implements Pregunta {
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
-        Scanner teclado = new Scanner(System.in);
-        teclado.nextLine();
-        inicio = LocalTime.now();
-        System.out.println("Inicio");
 
-        teclado.nextLine();
-        fin = LocalTime.now();
+        // evaluacion
+        long millisRespuesta = Long.parseLong(respuesta);
 
-        long segundosPulsacion = Duration.between(inicio, fin).toSeconds();
-        long milisegundos = Duration.between(inicio, fin).toMillis();
-        milisegundos = milisegundos - segundosPulsacion * 1000;
-
-        System.out.printf("Has pulsado en %d, %d segundos\n", segundosPulsacion, milisegundos);
+        System.out.printf("Has pulsado en %.2f segundos\n", millisRespuesta / 1000);
 
         //TODO: EVALUAR EL TIEMPO CON EL MARGEN DE ERROR (± 0.5 segundos).
 
-        return false;
+        return segundos - millisRespuesta == Math.abs(500);
+
     }
 
+    public int getSegundos() {
+        return segundos;
+    }
+
+    public long getMargen() {
+        return margen;
+    }
+
+    public LocalTime getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(LocalTime inicio) {
+        this.inicio = inicio;
+    }
+
+    public LocalTime getFin() {
+        return fin;
+    }
+
+    public void setFin(LocalTime fin) {
+        this.fin = fin;
+    }
 }
