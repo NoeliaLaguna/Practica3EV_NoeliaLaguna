@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.Random;
 
 /**
- * Clase para implementar la interfaz Entidades.Tipos.Pregunta.
+ * Clase para implementar la interfaz Entidades. Tipos. Pregunta.
  * Se implementan los metodos preguntar y evaluar respuesta.
  *
  * @author Noelia
@@ -29,9 +29,8 @@ public class CronometroPregunta implements Pregunta {
     public void preguntar() {
         Random segundosRndm = new Random();
         this.segundos = segundosRndm.nextInt(1, 6);
-        System.out.printf(
-                "Debes pulsar ENTER una vez. Una vez pulses ENTER, tienes que esperar %d segundos y pulsar ENTER de nuevo. \n" + " Yo contaré el tiempo y si aciertas te doy los puntos. Tienes un margen de error de ± 0.5 segundos.\n",
-                segundos);
+        System.out.printf("Debes pulsar ENTER una vez. Una vez pulses ENTER, tienes que esperar %d segundos y pulsar ENTER de nuevo. \n"
+                + "Yo contaré el tiempo y si aciertas te doy los puntos. Tienes un margen de error de ± 0.5 segundos.\n", segundos);
     }
 
     /**
