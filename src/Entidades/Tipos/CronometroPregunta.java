@@ -4,10 +4,10 @@ import java.time.LocalTime;
 import java.util.Random;
 
 /**
- * Clase para implementar la interfaz Entidades. Tipos. Pregunta.
+ * Clase para implementar la interfaz Pregunta.
  * Se implementan los metodos preguntar y evaluar respuesta.
  *
- * @author Noelia
+ * @author NoeliaLaguna
  * @version 1.0
  */
 public class CronometroPregunta implements Pregunta {
@@ -23,7 +23,9 @@ public class CronometroPregunta implements Pregunta {
     }
 
     /**
-     * Metodo para lanzar la pregunta.
+     * Metodo para lanzar la pregunta por pantalla.
+     * En este caso se genera un número aleatorio del 1 al 5 que se le asigna al atributo "segundos".
+     * Después muestra por pantalla el mensaje al usuario.
      */
     @Override
     public void preguntar() {
@@ -34,10 +36,13 @@ public class CronometroPregunta implements Pregunta {
     }
 
     /**
-     * Metodo para evaluar la respuesta recibida.
+     * Metodo para evaluar una respuesta recibida en tipo String.
+     * En este caso se evalua si los milisegundos recibidos por parametros son iguale al atributo segundos de esta clase, con un margen de error de
+     * ±0.5 segundos.
+     * <p>
      *
-     * @param respuesta
-     * @return boolean
+     * @param respuesta Se recibe un String el cual se evalua en el metodo para saber si es correcto o no.
+     * @return boolean Si la respuesta recibida en parametros es correcta se devuelve True, o si no es asi, False.
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {

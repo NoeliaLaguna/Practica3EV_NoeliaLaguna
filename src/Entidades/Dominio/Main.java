@@ -21,11 +21,9 @@ public class Main {
             gestorhistorial = new HistorialGestor();
             gestorConfig = new ConfigGestor();
             gestorLogs = new LogGestor();
-
+            gestorhistorial.verRanking();
         } catch (IOException ex) {
             ex.printStackTrace();
-
-            // si no somos capaces de crear los gestores
             return;
         }
 
@@ -66,7 +64,12 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Has elegido la opción \"Ver el Ranking\".");
-
+                try {
+                    gestorhistorial.verRanking();
+                } catch (IOException e) {
+                    System.err.println("Error al intentar mostrar el ranking." + e);
+                    e.printStackTrace();
+                }
                 break;
             case 3:
                 System.out.println("Has elegido la opción \"Ver el histórico de partidas\".");
@@ -118,7 +121,6 @@ public class Main {
         case 2:
             System.out.println("Has elegido la opción \"Añadir jugador\".");
             String nombre;
-            //HECHO: Controlar que solamente se pueden meter nombres sin espacios.
             do {
                 System.out.println("""
                         Ahora debemos registrar los jugadores.

@@ -7,22 +7,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HistorialGestor {
 
-    private final Path rutaAlArchivo;
+    private final Path rutaAlArchivoHistorial;
 
     public HistorialGestor() throws IOException {
-        this.rutaAlArchivo = Paths.get(Constantes.FICHERO_JUGADORES);
-        if (!Files.exists(this.rutaAlArchivo)) {
-            Files.createFile(this.rutaAlArchivo);
+        this.rutaAlArchivoHistorial = Paths.get(Constantes.FICHERO_HISTORIAL);
+        if (!Files.exists(this.rutaAlArchivoHistorial)) {
+            Files.createFile(this.rutaAlArchivoHistorial);
         }
     }
 
-    //TODO:Revisar con Oscar, he hecho todo en String para que sea mas sencillo.
     public void mostrar() throws IOException {
         List<String> listaPartidasAMostrar = listar();
 
@@ -33,14 +32,14 @@ public class HistorialGestor {
     }
 
     public List<String> listar() throws IOException {
-        List<String> listaPartidasString = Files.readAllLines(rutaAlArchivo);
+        List<String> listaPartidasString = Files.readAllLines(rutaAlArchivoHistorial);
         return listaPartidasString;
     }
 
     public void registrar(Juego juego) throws IOException {
         List<String> listaPartidas = listar();
         listaPartidas.add(juego.toString());
-        Files.write(rutaAlArchivo, listaPartidas);
+        Files.write(rutaAlArchivoHistorial, listaPartidas);
         System.out.println("Se ha añadido la partida al historial.");
     }
 
@@ -49,44 +48,30 @@ public class HistorialGestor {
 
         HashMap<String, Integer> contadores = new HashMap<>();
 
-        // contador por nombre
-        // map<string,Integer> -> vas almacenando
-        //for ()
-        // recorrer lineas
-
-        // split por ','
-
-        // split por ':'
-
-        /*if(contadores.containsKey("j1")){
-            contadores.put("j1", contadores.get("j1")+3);
-        }
-        else{
-            contadores.put("j1", 3);
-        }*/
-        contadores.put("j1", 1);
-        contadores.put("j2", 4);
-        contadores.put("j3", 2);
-
-        List<Integer> puntuaciones = new ArrayList<>(contadores.values());
-        Collections.sort(puntuaciones.reversed());
-        List<String> jugadoresVisitados = new ArrayList<>();
-        for (Integer puntos : puntuaciones) {
-            for (String nombre : contadores.keySet()) {
-                if (!jugadoresVisitados.contains(nombre)) {
-                    // escribir k y p
-                    System.out.printf("%s : %d \n");
-
-                    // agregar a jugadores visitados k
+        for (int cont = 0; cont < listaPartidas.size(); cont++) {
+            String partidaASeparar = listaPartidas.get(cont);
+            String[] partidaCompleta = partidaASeparar.split(",");
+            for (int i = 0; i < partidaCompleta.length; i++) {
+                String[] nombreYPuntos = partidaCompleta[i].split(":");
+                String nombreJugador = nombreYPuntos[0];
+                if (contadores.containsKey(nombreJugador)) {
+                    int puntosJugador = contadores.get(nombreJugador) + Integer.parseInt(nombreYPuntos[1]);
+                    contadores.put(nombreJugador, puntosJugador);
+                } else {
+                    int puntosJugador = Integer.parseInt(nombreYPuntos[1]);
+                    contadores.put(nombreJugador, puntosJugador);
                 }
             }
         }
 
-        //List<Map.Entry<String,Integer>> listaParaOrdenar = new ArrayList<>(contadores.entrySet());
-        //listaParaOrdenar.sort(Map.Entry.<>comparingByValue().reversed());
+        List<Map.Entry<String, Integer>> listaMapaOrdenado = new ArrayList<>(contadores.entrySet());
+        listaMapaOrdenado.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
 
-        // pasar de map a arraylist
-        // ordenar y mostrar con posicion 1. j1 -> 3 ptos
+        for (Map.Entry<String, Integer> ranking : listaMapaOrdenado) {
+
+            System.out.printf("%s : %d\n", ranking.getKey(), ranking.getValue());
+
+        }
 
     }
 }
