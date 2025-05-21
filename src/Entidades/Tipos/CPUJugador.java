@@ -50,7 +50,7 @@ public class CPUJugador extends Jugador {
         } else if (p instanceof MasterMindPregunta pregunta) {
             resultado = String.valueOf(rnd.nextInt(100, 1000));
         } else if (p instanceof CronometroPregunta pregunta) {
-            return "0";
+            resultado = "0";
         }
 
         System.out.println(resultado);

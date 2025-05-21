@@ -41,10 +41,6 @@ public class HistorialGestor {
         List<String> listaPartidas = listar();
         listaPartidas.add(juego.toString());
         Files.write(rutaAlArchivo, listaPartidas);
-        /*for (int cont = 0; cont < listaPartidas.size(); cont++) {
-            String partidaARegistrar = listaPartidas.get(cont);
-            Files.writeString(rutaAlArchivo, partidaARegistrar);
-        }*/
         System.out.println("Se ha añadido la partida al historial.");
     }
 
@@ -55,6 +51,7 @@ public class HistorialGestor {
 
         // contador por nombre
         // map<string,Integer> -> vas almacenando
+        //for ()
         // recorrer lineas
 
         // split por ','
@@ -74,10 +71,12 @@ public class HistorialGestor {
         List<Integer> puntuaciones = new ArrayList<>(contadores.values());
         Collections.sort(puntuaciones.reversed());
         List<String> jugadoresVisitados = new ArrayList<>();
-        for (Integer p : puntuaciones) {
-            for (String k : contadores.keySet()) {
-                if (!jugadoresVisitados.contains(k)) {
+        for (Integer puntos : puntuaciones) {
+            for (String nombre : contadores.keySet()) {
+                if (!jugadoresVisitados.contains(nombre)) {
                     // escribir k y p
+                    System.out.printf("%s : %d \n");
+
                     // agregar a jugadores visitados k
                 }
             }

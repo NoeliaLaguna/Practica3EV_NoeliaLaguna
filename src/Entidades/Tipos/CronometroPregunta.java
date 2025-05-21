@@ -29,7 +29,9 @@ public class CronometroPregunta implements Pregunta {
     public void preguntar() {
         Random segundosRndm = new Random();
         this.segundos = segundosRndm.nextInt(1, 6);
-        System.out.printf("Debes pulsar ENTER una vez. Una vez pulses ENTER, tienes que esperar %d segundos y pulsar ENTER de nuevo. \n" + " Yo contaré el tiempo y si aciertas te doy los puntos.\n", segundos);
+        System.out.printf(
+                "Debes pulsar ENTER una vez. Una vez pulses ENTER, tienes que esperar %d segundos y pulsar ENTER de nuevo. \n" + " Yo contaré el tiempo y si aciertas te doy los puntos. Tienes un margen de error de ± 0.5 segundos.\n",
+                segundos);
     }
 
     /**
@@ -44,11 +46,17 @@ public class CronometroPregunta implements Pregunta {
         // evaluacion
         long millisRespuesta = Long.parseLong(respuesta);
 
-        System.out.printf("Has pulsado en %.2f segundos\n", millisRespuesta / 1000);
+        System.out.printf("Has pulsado en %.2f segundos\n", millisRespuesta / 1000d);
 
         //TODO: EVALUAR EL TIEMPO CON EL MARGEN DE ERROR (± 0.5 segundos).
 
-        return segundos - millisRespuesta == Math.abs(500);
+        if ((segundos * 1000L) - millisRespuesta <= Math.abs(500)) {
+            System.out.println("Te llevas el punto!!");
+        } else {
+            System.out.println("Lo siento, te has pasado por mas de 0.5 segundos, no te llevas el punto.");
+        }
+
+        return (segundos * 1000L) - millisRespuesta <= Math.abs(500);
 
     }
 

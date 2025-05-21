@@ -37,14 +37,24 @@ public class MasterMindPregunta implements Pregunta {
 
         List<String> numerosDisponibles = new ArrayList<>();
         for (int cont = 0; cont < 10; cont++) {
-            numerosDisponibles.add("cont");
+
+            numerosDisponibles.add(String.valueOf(cont));
         }
 
+        String numeroSecretoString = "";
         for (int i = 0; i < arrayDeNumeros.length; i++) {
-            int indice = rnd.nextInt(0, numerosDisponibles.size());
+            int indice;
+            if (i == 0) {
+                indice = rnd.nextInt(1, numerosDisponibles.size());
+            } else {
+                indice = rnd.nextInt(0, numerosDisponibles.size());
+            }
             arrayDeNumeros[i] = numerosDisponibles.get(indice);
             numerosDisponibles.remove(indice);
+            String numero = String.valueOf(arrayDeNumeros[i]);
+            numeroSecretoString = numeroSecretoString.concat(numero);
         }
+        numeroSecreto = Integer.parseInt(numeroSecretoString);
 
     }
 

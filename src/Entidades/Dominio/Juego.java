@@ -31,6 +31,7 @@ public class Juego {
         this.configurarPartida();
         this.elegirTipoPartida();
         this.empezar();
+        this.terminar();
     }
 
     private void elegirTipoPartida() {
@@ -107,7 +108,7 @@ public class Juego {
 
         if (jugadoresHumanos < numJugadores) {
             jugadoresCPU = numJugadores - jugadoresHumanos;
-            System.out.printf("El numero de jugadores CPU es: %d \n", jugadoresCPU);
+            System.out.printf("El numero de jugadores CPU es: %d \n\n", jugadoresCPU);
 
         }
 
@@ -119,19 +120,19 @@ public class Juego {
 
         jugadores = new ArrayList<>(); //Es correcto inicializar el array aqui?
 
-        int opcionAntigua = -1;
+        ArrayList<Integer> opcionesAntiguas = new ArrayList<>();
         int opcionLista = -1;
         for (int cont = 1; cont <= jugadoresHumanos; cont++) {
             String opcionEscrita;
             do {
                 jugadorGestor.mostrar();
-                System.out.println("Elige un jugador de los que están registrados para jugar, indicando el número en la lista.");
-                System.out.println("****Recuerda que no se puede repetir el jugador que ya has elegido.****");
+                System.out.println("\n Elige un jugador de los que están registrados para jugar, indicando el número en la lista.");
+                System.out.println("****Recuerda que no se puede repetir el jugador que ya has elegido.****\n");
                 opcionEscrita = stringConComprobacionDigitNoDecimales();
                 opcionLista = Integer.parseInt(opcionEscrita);
             } while (opcionLista > jugadoresHumanosDisponibles.size() || opcionLista <= 0);
 
-            while (opcionAntigua == opcionLista) {
+            while (opcionesAntiguas.contains(opcionLista)) {
                 System.out.println("Esa opción ya la has elegido. Recuerda que no se puede repetir. Por favor elige otro numero.");
                 opcionEscrita = stringConComprobacionDigitNoDecimales();
                 opcionLista = Integer.parseInt(opcionEscrita);
@@ -139,7 +140,7 @@ public class Juego {
             HumanoJugador jugadorAAnyadir = jugadoresHumanosDisponibles.get(opcionLista - 1);
             jugadores.add(jugadorAAnyadir);
             System.out.printf("El jugador %s añadido correctamente a la partida. \n\n", jugadorAAnyadir.getNombre());
-            opcionAntigua = opcionLista;
+            opcionesAntiguas.add(opcionLista);
 
         }
 
@@ -188,11 +189,11 @@ public class Juego {
         //HECHO: Hay que poner mensajes indicando a quien le toca jugar.
         for (int cont = 0; cont < jugadores.size(); cont++) {
             Jugador jugador = jugadores.get(cont);
-            System.out.printf("Es el turno del jugador: %s \n", jugadores.get(cont).getNombre());
+            System.out.printf("\n Es el turno del jugador: %s \n \n", jugadores.get(cont).getNombre());
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = 4;//aleatorio.nextInt(1, 5);
+            int tipoDePregunta = 2; //aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta(); //HECHO: Hay que decir que tipo de pregunta ha salido.

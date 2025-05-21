@@ -32,7 +32,7 @@ public class Main {
         boolean salir = false;
 
         while (!salir) {
-            System.out.println("***Bienvenido al Ultimate Quiz.***");
+            System.out.println("\n***Bienvenido al Ultimate Quiz.***\n");
             System.out.println("""
                     ¿Qué quieres hacer? Elige el número de la opción que prefieras.
                     1.- Jugar partida.
@@ -55,10 +55,10 @@ public class Main {
                     throw new RuntimeException(e);
                 }
                 try {
-                    System.out.println("Has elegido la opción \"Jugar una partida\"");
+                    System.out.println("Has elegido la opción \"Jugar una partida\" \n");
                     Juego juego = new Juego(gestorJugador, gestorhistorial, gestorConfig, gestorLogs);
-
                     juego.ejecutar();
+
                 } catch (IOException e) {
                     System.err.println("Error al iniciar el juego.");
                 }

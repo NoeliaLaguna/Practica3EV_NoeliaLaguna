@@ -17,9 +17,10 @@ public class HumanoJugador extends Jugador {
         if (p instanceof CronometroPregunta) {
             teclado.nextLine();
             ((CronometroPregunta) p).setInicio(LocalTime.now());
-            System.out.println("Inicio");
+            System.out.println("Inicio del contador...");
 
             teclado.nextLine();
+            System.out.println("Fin del contador.");
             ((CronometroPregunta) p).setFin(LocalTime.now());
 
             long milisegundos = Duration.between(((CronometroPregunta) p).getInicio(), ((CronometroPregunta) p).getFin()).toMillis();
