@@ -32,7 +32,7 @@ public class CPUJugador extends Jugador {
             }
             double result = e.calculate();
             int resultInt = (int) result;
-            System.out.printf("El resultado es %d", resultInt);
+            resultado = String.valueOf(resultInt);
 
         } else if (p instanceof GeografiaPregunta pregunta) {
             //HECHO: Implementar la respuesta de la CPU.

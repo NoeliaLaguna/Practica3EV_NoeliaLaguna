@@ -148,13 +148,7 @@ public class Juego {
 
         }
 
-        //HECHO: Seleccionar los jugadores. Podría mostrar por pantalla el listado del fichero de jugadores registrados para que el usuario tenga la info de que
-        // jugadores están. Muestra la lista que te da jugadorGestor y escoge entre ellos.
-        //HECHO: Comprobar si el numero de jugador seleccionado esta disponible o no lo has escogido ya. Y sino, volver a preguntar otra vez por una elección.
-        //HECHO: Si el jugador esta correctamente registrado, añadirlo a la Lista de jugadores "private List<Jugador> jugadores".
-        //HECHO: Falta manejar que pasa si el usuario introduce un numero superior o inferior a los de la lista.
-
-        jugadores = new ArrayList<>(); //Es correcto inicializar el array aqui?
+        jugadores = new ArrayList<>();
 
         ArrayList<Integer> opcionesAntiguas = new ArrayList<>();
         int opcionLista = -1;
@@ -180,7 +174,6 @@ public class Juego {
 
         }
 
-        //HECHO: Falta añadir las CPU a la lista de jugadores.
         if (jugadores.size() < numJugadores) {
             for (int cont = 0; cont < jugadoresCPU; cont++) {
                 CPUJugador CPU = new CPUJugador("CPU" + (cont + 1));
@@ -200,9 +193,9 @@ public class Juego {
         Collections.shuffle(jugadores);
 
         for (int cont = 0; cont <= this.rondas; cont++) {
-            System.out.printf("***INICIO DE LA RONDA %d***\n", (cont + 1));
+            System.out.printf("\n***INICIO DE LA RONDA %d***\n", (cont + 1));
             this.jugarRonda();
-            System.out.printf("***FIN DE LA RONDA %d***\n", (cont + 1));
+            System.out.printf("\n***FIN DE LA RONDA %d***\n", (cont + 1));
         }
 
     }
@@ -212,14 +205,15 @@ public class Juego {
      * Después invoca el metodo registrar(), que pertenece a la clase HistorialGestor, donde se registra la partida.
      */
     private void terminar() {
-
         //TODO: Recuento final de puntos. Mostrar por pantalla.
+        System.out.println("\n***RECUENTO FINAL DE PUNTOS***\n");
+        System.out.println(this);
 
         //HECHO: Añadir partida a Histórico. Para hacerlo he tenido que añadir al constructor de Juego todos los gestores.
         try {
             gestorHistorial.registrar(this);
         } catch (IOException e) {
-            System.err.println("Error al registrar la partida." + e);
+            System.err.println("\nError al registrar la partida." + e);
             e.printStackTrace();
         }
 
@@ -253,7 +247,7 @@ public class Juego {
                 pregunta.preguntar();
 
                 for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
-                    System.out.println("Escribe tu respuesta:");
+                    System.out.println("\nEscribe tu respuesta:\n");
                     respuesta = jugador.responder(pregunta);
                     acierto = pregunta.evaluarRespuesta(respuesta);
                     if (acierto) {

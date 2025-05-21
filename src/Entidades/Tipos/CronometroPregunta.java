@@ -22,6 +22,8 @@ public class CronometroPregunta implements Pregunta {
         return 1;
     }
 
+    //TODO:Esto no lo hace bien a veces no se muestra el mensaje al pulsar enter, REVISAR.
+
     /**
      * Metodo para lanzar la pregunta por pantalla.
      * En este caso se genera un número aleatorio del 1 al 5 que se le asigna al atributo "segundos".

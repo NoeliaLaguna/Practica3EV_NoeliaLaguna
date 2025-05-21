@@ -30,7 +30,9 @@ public class MasterMindPregunta implements Pregunta {
     @Override
     public void preguntar() {
 
-        System.out.println("***Te ha tocado la pregunta MASTERMIND.*** \n" + "Tienes que decir un numero de 3 cifras y te diré cuántas cifras están correctamente ubicadas y " + "cuántas cifras están correctas pero mal ubicadas.");
+        System.out.println("***Te ha tocado la pregunta MASTERMIND.*** \n"
+                + "Tienes que decir un numero de 3 cifras y te diré cuántas cifras están correctamente ubicadas y "
+                + "cuántas cifras están correctas pero mal ubicadas.");
 
         String[] arrayDeNumeros = new String[3];
         Random rnd = new Random();
@@ -91,7 +93,8 @@ public class MasterMindPregunta implements Pregunta {
             System.out.printf("Has acertado!! El numero secreto es %d\n", numeroSecreto);
         } else {
             intentosUsados++;
-            System.out.printf("Tienes %d numeros acertados y bien colocados. Y tienes %d numeros acertados pero mal colocados. \n", contNumeroYPosicion, contSoloposicion);
+            System.out.printf("Tienes %d numeros acertados y bien colocados. Y tienes %d numeros acertados pero mal colocados. \n",
+                    contNumeroYPosicion, contSoloposicion);
             if (getNumeroIntentos() == intentosUsados) {
                 System.out.printf("Se han acabado los intentos. El número es %d \n", numeroSecreto);
             }

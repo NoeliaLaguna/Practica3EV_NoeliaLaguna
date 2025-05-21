@@ -9,8 +9,7 @@ import static Utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
 public class Main {
     public static void main(String[] args) {
-
-        Scanner teclado = new Scanner(System.in);
+        
         JugadorGestor gestorJugador;
         HistorialGestor gestorhistorial;
         LogGestor gestorLogs;
