@@ -50,7 +50,19 @@ public class JugadorGestor {
 
     }
 
-    public void eliminar(Jugador jug) {
+    public void eliminar(Jugador jug) throws IOException {
+
+        List<String> listaJugadores;
+
+        listaJugadores = Files.readAllLines(rutaAlArchivo);
+
+        if (listaJugadores.contains(jug.getNombre())) {
+            listaJugadores.remove(jug.getNombre());
+            Files.write(rutaAlArchivo, listaJugadores);
+            System.out.println("Se ha eliminado el jugador correctamente.");
+        } else {
+            System.err.println("No se ha encontrado al jugador.");
+        }
 
     }
 

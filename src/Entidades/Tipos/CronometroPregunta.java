@@ -54,15 +54,13 @@ public class CronometroPregunta implements Pregunta {
 
         System.out.printf("Has pulsado en %.2f segundos\n", millisRespuesta / 1000d);
 
-        //TODO: EVALUAR EL TIEMPO CON EL MARGEN DE ERROR (± 0.5 segundos).
-
         if ((segundos * 1000L) - millisRespuesta <= Math.abs(500)) {
             System.out.println("Te llevas el punto!!");
         } else {
             System.out.println("Lo siento, te has pasado por mas de 0.5 segundos, no te llevas el punto.");
         }
 
-        return (segundos * 1000L) - millisRespuesta <= Math.abs(500);
+        return Math.abs((segundos * 1000L) - millisRespuesta) <= Math.abs(500);
 
     }
 

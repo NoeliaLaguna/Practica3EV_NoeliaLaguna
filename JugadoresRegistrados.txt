@@ -1,8 +1,6 @@
-Noelia
-Alex
-Oscar
-Maria
-Esteban
-Adri
-Ana
-Estela
+NOELIA
+OSCAR
+PEDRO
+PABLO
+ESTEBAN
+ANA

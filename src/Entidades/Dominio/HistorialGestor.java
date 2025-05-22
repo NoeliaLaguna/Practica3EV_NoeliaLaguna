@@ -1,5 +1,6 @@
 package Entidades.Dominio;
 
+import Entidades.Tipos.HumanoJugador;
 import Utils.Constantes;
 
 import java.io.IOException;
@@ -50,8 +51,9 @@ public class HistorialGestor {
      * esta funcionalidad.
      * Por último, se itera la lista y se muestra por pantalla el ranking ordenado.
      */
-    public void verRanking() throws IOException {
+    public void verRanking(JugadorGestor gestorJugador) throws IOException {
         List<String> listaPartidas = listar();
+        List<HumanoJugador> jugadoresRegistrados = gestorJugador.listar();
 
         HashMap<String, Integer> contadores = new HashMap<>();
 
@@ -60,13 +62,20 @@ public class HistorialGestor {
             String[] partidaCompleta = partidaASeparar.split(",");
             for (int i = 0; i < partidaCompleta.length; i++) {
                 String[] nombreYPuntos = partidaCompleta[i].split(":");
-                String nombreJugador = nombreYPuntos[0];
+                String nombreJugador = nombreYPuntos[0].toUpperCase();
+                HumanoJugador jugadorAEliminar = new HumanoJugador(nombreJugador);
                 if (contadores.containsKey(nombreJugador)) {
                     int puntosJugador = contadores.get(nombreJugador) + Integer.parseInt(nombreYPuntos[1]);
-                    contadores.put(nombreJugador, puntosJugador);
+                    if (jugadoresRegistrados.contains(jugadorAEliminar) && !nombreJugador.contains("CPU")) {
+                        contadores.put(nombreJugador, puntosJugador);
+                    }
                 } else {
-                    int puntosJugador = Integer.parseInt(nombreYPuntos[1]);
-                    contadores.put(nombreJugador, puntosJugador);
+                    jugadorAEliminar = new HumanoJugador(nombreJugador);
+                    if (jugadoresRegistrados.contains(jugadorAEliminar) && !nombreJugador.contains("CPU")) { //No entiendo por qué no funciona.
+                        int puntosJugador = Integer.parseInt(nombreYPuntos[1]);
+                        contadores.put(nombreJugador, puntosJugador);
+                    }
+
                 }
             }
         }

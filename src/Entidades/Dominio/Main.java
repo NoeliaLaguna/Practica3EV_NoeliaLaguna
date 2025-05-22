@@ -9,7 +9,7 @@ import static Utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
 public class Main {
     public static void main(String[] args) {
-        
+
         JugadorGestor gestorJugador;
         HistorialGestor gestorhistorial;
         LogGestor gestorLogs;
@@ -20,12 +20,11 @@ public class Main {
             gestorhistorial = new HistorialGestor();
             gestorConfig = new ConfigGestor();
             gestorLogs = new LogGestor();
-            gestorhistorial.verRanking();
+            gestorConfig.leer();
         } catch (IOException ex) {
             ex.printStackTrace();
             return;
         }
-
         boolean salir = false;
 
         while (!salir) {
@@ -59,12 +58,11 @@ public class Main {
                 } catch (IOException e) {
                     System.err.println("Error al iniciar el juego.");
                 }
-
                 break;
             case 2:
                 System.out.println("Has elegido la opción \"Ver el Ranking\".");
                 try {
-                    gestorhistorial.verRanking();
+                    gestorhistorial.verRanking(gestorJugador);
                 } catch (IOException e) {
                     System.err.println("Error al intentar mostrar el ranking." + e);
                     e.printStackTrace();
@@ -116,6 +114,7 @@ public class Main {
         switch (opcion) {
         case 1:
             System.out.println("Has elegido la opción \"Ver Jugadores\".");
+            jugadorGestor.mostrar();
             break;
         case 2:
             System.out.println("Has elegido la opción \"Añadir jugador\".");
@@ -126,10 +125,10 @@ public class Main {
                         Dime el nombre del jugador, recuerda, cada nombre es único en el sistema y no puede contener espacios.
                         (Si ya estás registrado, el sistema lo detectará al escribir tu nombre).""");
 
-                nombre = teclado.nextLine();
+                nombre = teclado.nextLine().toUpperCase();
             } while (nombre.contains(" "));
 
-            HumanoJugador jug = new HumanoJugador(nombre);
+            HumanoJugador jug = new HumanoJugador(nombre.toUpperCase());
             try {
                 jugadorGestor.registrar(jug);
             } catch (IOException e) {
@@ -139,6 +138,10 @@ public class Main {
             break;
         case 3:
             System.out.println("Has elegido la opción \"Eliminar jugador\".");
+            System.out.println("\nIndica el nombre del jugador que deseas eliminar.");
+            nombre = teclado.nextLine().toUpperCase();
+            HumanoJugador jugElimnar = new HumanoJugador(nombre.toUpperCase());
+            jugadorGestor.eliminar(jugElimnar);
             break;
         case 4:
             System.out.println("Volver al Menu Principal.");

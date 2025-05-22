@@ -102,6 +102,9 @@ public class Juego {
             break;
         case 5:
             System.out.println("Has elegido la opción  \"Volver al menu de inicio.\"");
+            //TODO:Esto esta bien hecho? Hay otra manera de volver al menu de inicio?
+            String[] args = {};
+            Main.main(args);
             break;
         }
 
@@ -247,7 +250,7 @@ public class Juego {
                 pregunta.preguntar();
 
                 for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
-                    System.out.println("\nEscribe tu respuesta:\n");
+                    System.out.println("\nEscribe tu respuesta:");
                     respuesta = jugador.responder(pregunta);
                     acierto = pregunta.evaluarRespuesta(respuesta);
                     if (acierto) {

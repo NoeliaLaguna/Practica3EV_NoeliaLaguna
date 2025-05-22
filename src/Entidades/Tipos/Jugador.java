@@ -1,5 +1,7 @@
 package Entidades.Tipos;
 
+import java.util.Objects;
+
 public abstract class Jugador {
     private String nombre;
     private int puntos = 0;
@@ -26,5 +28,18 @@ public abstract class Jugador {
     @Override
     public String toString() {
         return this.nombre.toUpperCase();
+    }
+
+    @Override
+    public boolean equals(Object otro) {
+        if (otro == null || getClass() != otro.getClass())
+            return false;
+        Jugador jugador = (Jugador) otro;
+        return Objects.equals(nombre, jugador.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(nombre);
     }
 }
