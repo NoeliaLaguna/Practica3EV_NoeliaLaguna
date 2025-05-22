@@ -20,7 +20,7 @@ public class Main {
             gestorhistorial = new HistorialGestor();
             gestorConfig = new ConfigGestor();
             gestorLogs = new LogGestor();
-            gestorConfig.leer();
+
         } catch (IOException ex) {
             ex.printStackTrace();
             return;
