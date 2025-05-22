@@ -15,8 +15,12 @@ public class HumanoJugador extends Jugador {
 
         Scanner teclado = new Scanner(System.in);
         if (p instanceof CronometroPregunta) {
+
             teclado.nextLine();
-            System.out.println("Inicio del contador...");
+            System.out.println("");
+
+            System.out.print("Inicio del contador");
+
             ((CronometroPregunta) p).setInicio(LocalTime.now());
 
             teclado.nextLine();

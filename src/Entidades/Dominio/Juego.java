@@ -234,7 +234,7 @@ public class Juego {
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = aleatorio.nextInt(1, 5);
+            int tipoDePregunta = 4; //aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta();

@@ -20,6 +20,7 @@ public class MatematicasPregunta implements Pregunta {
      * Metodo para lanzar la pregunta.
      */
     private String operacion;
+    private int respuestaCorrecta;
 
     @Override
     public int getNumeroIntentos() {
@@ -48,7 +49,26 @@ public class MatematicasPregunta implements Pregunta {
 
         this.operacion = operacion.toString();
 
+        Calculable e = null;
+        try {
+            e = new ExpressionBuilder(this.operacion).build();
+        } catch (UnknownFunctionException ex) {
+            System.err.println("Función desconocida, no es posible calcular." + ex);
+            ex.printStackTrace();
+        } catch (UnparsableExpressionException ex) {
+            System.err.println("No es posible parsear la funcion. " + ex);
+            ex.printStackTrace();
+        }
+
+        double result = e.calculate();
+        this.respuestaCorrecta = (int) result;
+
         System.out.println(operacion);
+
+        /*
+         * si modo depuracion
+         *   sout(this.respuestaCorrecta)
+         * */
 
     }
 
@@ -62,28 +82,13 @@ public class MatematicasPregunta implements Pregunta {
     public boolean evaluarRespuesta(String respuesta) {
         //He cambiado esto para hacerlo con la librería exp4j porque el otro código fallaba.
         int respuestaInt = Integer.parseInt(respuesta);
-
-        Calculable e = null;
-        try {
-            e = new ExpressionBuilder(operacion).build();
-        } catch (UnknownFunctionException ex) {
-            System.err.println("Función desconocida, no es posible calcular." + ex);
-            ex.printStackTrace();
-        } catch (UnparsableExpressionException ex) {
-            System.err.println("No es posible parsear la funcion. " + ex);
-            ex.printStackTrace();
-        }
-
-        double result = e.calculate();
-        int resultInt = (int) result;
-
-        if (respuestaInt == result) {
-            System.out.printf("Correcto!! el resultado es %d \n", resultInt);
+        if (respuestaInt == this.respuestaCorrecta) {
+            System.out.printf("Correcto!! el resultado es %d \n", this.respuestaCorrecta);
         } else {
-            System.out.printf("Incorrecto!! el resultado es %d \n", resultInt);
+            System.out.printf("Incorrecto!! el resultado es %d \n", this.respuestaCorrecta);
         }
 
-        return respuestaInt == resultInt;
+        return respuestaInt == this.respuestaCorrecta;
     }
 
     public String getOperacion() {

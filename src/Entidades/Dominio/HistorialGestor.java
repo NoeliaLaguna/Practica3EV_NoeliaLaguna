@@ -51,42 +51,33 @@ public class HistorialGestor {
      * esta funcionalidad.
      * Por último, se itera la lista y se muestra por pantalla el ranking ordenado.
      */
-    public void verRanking(JugadorGestor gestorJugador) throws IOException {
+    public void verRanking(List<HumanoJugador> jugadoresRegistrados) throws IOException {
         List<String> listaPartidas = listar();
-        List<HumanoJugador> jugadoresRegistrados = gestorJugador.listar();
 
         HashMap<String, Integer> contadores = new HashMap<>();
 
-        for (int cont = 0; cont < listaPartidas.size(); cont++) {
-            String partidaASeparar = listaPartidas.get(cont);
+        for (String partidaASeparar : listaPartidas) {
             String[] partidaCompleta = partidaASeparar.split(",");
-            for (int i = 0; i < partidaCompleta.length; i++) {
-                String[] nombreYPuntos = partidaCompleta[i].split(":");
+            for (String jugadorPuntos : partidaCompleta) {
+                String[] nombreYPuntos = jugadorPuntos.split(":");
                 String nombreJugador = nombreYPuntos[0].toUpperCase();
+                int puntosPartida = Integer.parseInt(nombreYPuntos[1]);
                 HumanoJugador jugadorAEliminar = new HumanoJugador(nombreJugador);
-                if (contadores.containsKey(nombreJugador)) {
-                    int puntosJugador = contadores.get(nombreJugador) + Integer.parseInt(nombreYPuntos[1]);
-                    if (jugadoresRegistrados.contains(jugadorAEliminar) && !nombreJugador.contains("CPU")) {
-                        contadores.put(nombreJugador, puntosJugador);
+                if (jugadoresRegistrados.contains(jugadorAEliminar) && !nombreJugador.contains("CPU")) { //No entiendo por qué no funciona.
+                    int puntosJugador = puntosPartida;
+                    if (contadores.containsKey(nombreJugador)) {
+                        puntosJugador += contadores.get(nombreJugador);
                     }
-                } else {
-                    jugadorAEliminar = new HumanoJugador(nombreJugador);
-                    if (jugadoresRegistrados.contains(jugadorAEliminar) && !nombreJugador.contains("CPU")) { //No entiendo por qué no funciona.
-                        int puntosJugador = Integer.parseInt(nombreYPuntos[1]);
-                        contadores.put(nombreJugador, puntosJugador);
-                    }
-
+                    contadores.put(nombreJugador, puntosJugador);
                 }
+
             }
         }
 
         List<Map.Entry<String, Integer>> listaMapaOrdenado = new ArrayList<>(contadores.entrySet());
         listaMapaOrdenado.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
-
         for (Map.Entry<String, Integer> ranking : listaMapaOrdenado) {
-
             System.out.printf("%s : %d\n", ranking.getKey(), ranking.getValue());
-
         }
 
     }

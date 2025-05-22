@@ -62,7 +62,7 @@ public class Main {
             case 2:
                 System.out.println("Has elegido la opción \"Ver el Ranking\".");
                 try {
-                    gestorhistorial.verRanking(gestorJugador);
+                    gestorhistorial.verRanking(gestorJugador.listar());
                 } catch (IOException e) {
                     System.err.println("Error al intentar mostrar el ranking." + e);
                     e.printStackTrace();

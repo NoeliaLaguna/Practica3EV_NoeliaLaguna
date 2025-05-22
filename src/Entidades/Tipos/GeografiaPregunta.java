@@ -102,6 +102,11 @@ public class GeografiaPregunta implements Pregunta {
             opcion++;
         }
 
+        /**
+         * Si modo depuracion
+         * sout respuetaCorrecta
+         */
+
     }
 
     private void mostrarDistanciasOpciones() {
