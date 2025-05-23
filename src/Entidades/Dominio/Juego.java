@@ -205,13 +205,36 @@ public class Juego {
     }
 
     /**
-     * Este metodo hace un recuento final de puntos, mostrandolos por pantalla.
+     * Este metodo hace un recuento final de puntos, mostrandolos por pantalla, y dice quien es el ganador.
      * Después invoca el metodo registrar(), que pertenece a la clase HistorialGestor, donde se registra la partida.
      */
     private void terminar() {
 
         System.out.println("\n***RECUENTO FINAL DE PUNTOS***\n");
         System.out.println(this);
+
+        int puntosMax = 0;
+        for (Jugador jugador : jugadores) {
+            int puntos = jugador.getPuntos();
+            if (puntos > puntosMax) {
+                puntosMax = puntos;
+            }
+        }
+        List<Jugador> ganadores = new ArrayList<>();
+
+        for (Jugador ganador : jugadores) {
+            if (ganador.getPuntos() == puntosMax) {
+                ganadores.add(ganador);
+            }
+        }
+        if (ganadores.size() > 1) {
+            System.out.println("Hay un empate entre varios jugadores. Los ganadores son: ");
+        } else {
+            System.out.print("El ganador es: ");
+        }
+        for (Jugador ganador : ganadores) {
+            System.out.println(ganador.getNombre());
+        }
 
         try {
             gestorHistorial.registrar(this);

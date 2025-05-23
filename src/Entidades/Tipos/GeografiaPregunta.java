@@ -120,7 +120,7 @@ public class GeografiaPregunta implements Pregunta {
 
             double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont));
 
-            System.out.printf("\n%s) %s -> %.2f", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
+            System.out.printf("\n%s) %s -> %.2f\n", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
             opcion++;
         }
     }
