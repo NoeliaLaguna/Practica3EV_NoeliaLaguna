@@ -1,5 +1,6 @@
 package Entidades.Tipos;
 
+import Entidades.Dominio.Configuracion;
 import Utils.Constantes;
 import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
@@ -28,7 +29,7 @@ public class MatematicasPregunta implements Pregunta {
     }
 
     @Override
-    public void preguntar() {
+    public void preguntar(Configuracion config) {
 
         //Consultar con el profe.
         Random numeroRandom = new Random();
@@ -67,8 +68,11 @@ public class MatematicasPregunta implements Pregunta {
 
         /*
          * si modo depuracion
-         *   sout(this.respuestaCorrecta)
+         * sout(this.respuestaCorrecta)
          * */
+        if (config.isDepuracion()) {
+            System.out.printf("Le respuesta es: %d\n", respuestaCorrecta);
+        }
 
     }
 
@@ -83,9 +87,9 @@ public class MatematicasPregunta implements Pregunta {
         //He cambiado esto para hacerlo con la librería exp4j porque el otro código fallaba.
         int respuestaInt = Integer.parseInt(respuesta);
         if (respuestaInt == this.respuestaCorrecta) {
-            System.out.printf("Correcto!! el resultado es %d \n", this.respuestaCorrecta);
+            System.out.printf("\nCorrecto!! el resultado es %d", this.respuestaCorrecta);
         } else {
-            System.out.printf("Incorrecto!! el resultado es %d \n", this.respuestaCorrecta);
+            System.out.printf("\nIncorrecto!! el resultado es %d", this.respuestaCorrecta);
         }
 
         return respuestaInt == this.respuestaCorrecta;

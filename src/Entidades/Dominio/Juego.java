@@ -32,6 +32,7 @@ public class Juego {
     private ConfigGestor gestorConfig;
     private LogGestor gestorLogs;
     private ArrayList<HumanoJugador> jugadoresHumanosDisponibles;
+    Configuracion config;
 
     /**
      * Crea una nueva instancia de Juego con los gestores necesarios para su manejo y el manejo de los ficheros.
@@ -47,6 +48,7 @@ public class Juego {
         this.gestorHistorial = gestorHistorial;
         this.gestorConfig = gestorConfig;
         this.gestorLogs = gestorLogs;
+
     }
 
     /**
@@ -54,6 +56,7 @@ public class Juego {
      * Invoca los metodos configurarPartida(), elegirTipoPartida(), empezar() y terminar().
      */
     public void ejecutar() throws IOException {
+        config = gestorConfig.leer();
         this.configurarPartida();
         this.elegirTipoPartida();
         this.empezar();
@@ -65,7 +68,6 @@ public class Juego {
      * base al tipo de partida se modifica el atributo rondas con el numero correspondiente.
      */
     private void elegirTipoPartida() {
-        // HECHO: Crear el menu de elección de partida.
         Scanner teclado = new Scanner(System.in);
 
         boolean salir = false;
@@ -192,7 +194,6 @@ public class Juego {
      */
     private void empezar() throws IOException {
 
-        //HECHO: Ordenar jugadores de forma aleatoria.
         Collections.shuffle(jugadores);
 
         for (int cont = 0; cont <= this.rondas; cont++) {
@@ -208,11 +209,10 @@ public class Juego {
      * Después invoca el metodo registrar(), que pertenece a la clase HistorialGestor, donde se registra la partida.
      */
     private void terminar() {
-        //TODO: Recuento final de puntos. Mostrar por pantalla.
+
         System.out.println("\n***RECUENTO FINAL DE PUNTOS***\n");
         System.out.println(this);
 
-        //HECHO: Añadir partida a Histórico. Para hacerlo he tenido que añadir al constructor de Juego todos los gestores.
         try {
             gestorHistorial.registrar(this);
         } catch (IOException e) {
@@ -234,7 +234,7 @@ public class Juego {
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = 4; //aleatorio.nextInt(1, 5);
+            int tipoDePregunta = aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta();
@@ -247,7 +247,7 @@ public class Juego {
             boolean acierto = false;
 
             if (pregunta != null) {
-                pregunta.preguntar();
+                pregunta.preguntar(config);
 
                 for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
                     System.out.println("\nEscribe tu respuesta:");

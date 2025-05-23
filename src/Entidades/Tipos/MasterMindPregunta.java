@@ -1,5 +1,7 @@
 package Entidades.Tipos;
 
+import Entidades.Dominio.Configuracion;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +30,7 @@ public class MasterMindPregunta implements Pregunta {
      * Metodo para lanzar la pregunta.
      */
     @Override
-    public void preguntar() {
+    public void preguntar(Configuracion config) {
 
         System.out.println("***Te ha tocado la pregunta MASTERMIND.*** \n"
                 + "Tienes que decir un numero de 3 cifras y te diré cuántas cifras están correctamente ubicadas y "
@@ -57,6 +59,9 @@ public class MasterMindPregunta implements Pregunta {
             numeroSecretoString = numeroSecretoString.concat(numero);
         }
         numeroSecreto = Integer.parseInt(numeroSecretoString);
+        if (config.isDepuracion()) {
+            System.out.printf("El numero secreto es: %d\n", numeroSecreto);
+        }
 
     }
 
@@ -80,6 +85,9 @@ public class MasterMindPregunta implements Pregunta {
         for (int i = 0; i < arrayRespuesta.length; i++) {
             if (arrayRespuesta[i] == arrayNumero[i]) {
                 contNumeroYPosicion++;
+                if (contNumeroYPosicion == arrayNumero.length) {
+                    acierto = true;
+                }
             } else {
                 for (int cont = 0; cont < arrayNumero.length; cont++) {
                     if (i != cont && arrayRespuesta[i] == arrayNumero[cont]) {

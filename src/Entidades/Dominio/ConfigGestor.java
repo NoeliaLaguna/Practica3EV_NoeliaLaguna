@@ -12,8 +12,6 @@ import java.util.Map;
 
 public class ConfigGestor {
 
-    //TODO: No tengo muy claro si lo estoy haciendo bien.
-
     private final Path rutaAlArchivoConfig;
 
     public ConfigGestor() throws IOException {
@@ -39,22 +37,19 @@ public class ConfigGestor {
             }
         }
 
-        // asignacion a atributos del objeto config
         config.setDepuracion(Boolean.parseBoolean(configuraciones.get("depuracion")));
-        //config.setLicencia(Integer.parseInt(configuraciones.get("licencia")));
 
         return config;
     }
 
-    private String serializar(Configuracion c) {
+    private String serializar(Configuracion config) {
         String resultado = "";
-        resultado += String.format("depuracion=%s", c.isDepuracion() ? "true" : "false");
-        //resultado+=String.format("\nlicencia=%d", c.getLicencia());
+        resultado += String.format("depuracion=%s", config.isDepuracion() ? "true" : "false");
         return resultado;
     }
 
-    public void guardar(Configuracion c) throws IOException {
-        String configuracionSerializada = serializar(c);
+    public void guardar(Configuracion config) throws IOException {
+        String configuracionSerializada = serializar(config);
         Files.writeString(rutaAlArchivoConfig, configuracionSerializada);
     }
 }

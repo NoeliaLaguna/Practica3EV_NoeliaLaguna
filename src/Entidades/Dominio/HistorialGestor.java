@@ -70,7 +70,6 @@ public class HistorialGestor {
                     }
                     contadores.put(nombreJugador, puntosJugador);
                 }
-
             }
         }
 

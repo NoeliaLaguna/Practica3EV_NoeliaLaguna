@@ -1,7 +1,7 @@
 package Entidades.Tipos;
 
+import Entidades.Dominio.Configuracion;
 import Utils.Constantes;
-import Utils.MetodosEstaticos;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -67,7 +67,7 @@ public class GeografiaPregunta implements Pregunta {
      * Metodo para lanzar la pregunta.
      */
     @Override
-    public void preguntar() {
+    public void preguntar(Configuracion config) {
         Random rnd = new Random();
         ArrayList<Integer> indicesCiudades = new ArrayList<>();
         for (int i = 0; i < ciudades.size(); i++) {
@@ -107,38 +107,37 @@ public class GeografiaPregunta implements Pregunta {
          * sout respuetaCorrecta
          */
 
+        if (config.isDepuracion()) {
+            mostrarDistanciasOpciones();
+            System.out.printf("\nLe respuesta es: %s\n", opcionCorrecta);
+        }
+
     }
 
     private void mostrarDistanciasOpciones() {
         char opcion = 'A';
         for (int cont = 0; cont < ciudadesOpciones.size(); cont++) {
 
-            double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont)); //Falta redondear a 2 decimales.
-            double distanciaDosDecimales = MetodosEstaticos.redondearADosDecimales(distancia);
+            double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont));
 
-            System.out.println(opcion + ") " + ciudadesOpciones.get(cont).getNombre() + " -> " + distanciaDosDecimales);
+            System.out.printf("\n%s) %s -> %.2f", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
             opcion++;
         }
     }
 
     /**
-     * Metodo para evaluar la respuesta recibida.
+     * Metodo para evaluar la respuesta recibida. Este metodo compara el char de la respuesta con el char de la opcion correcta, si son iguales,
+     * devuelve true. Si no, devuelve false.
      *
      * @param respuesta Se introduce la respuesta tipo String para evaluar.
      * @return boolean
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
-        //TODO: Esta linea da error de indexOutOfBounds
         CiudadGeolocalizada ciudadCorrecta = ciudadesOpciones.get(opcionCorrecta - 'A');
 
-        /// HECHO: Comparar respuesta con tu char correcto
-        // para sacar la respuesta correcta del array de ciudades
-        // teniendo el char correcto, por ejemplo C.
-        // imagina que A = 56, B= 57, C = 58.. C-A = 2 -> corresponde con ciudadesOpciones.get('c'-'a')
-        // siempre usa la A para restar porque la A es como tu 0
         String opcionCorrectaString = String.valueOf(opcionCorrecta);
-        //HECHO: Sacar las 4 ciudades de las opciones con su distancia.
+
         mostrarDistanciasOpciones();
         if (respuesta.equalsIgnoreCase(opcionCorrectaString)) {
             System.out.printf("Correcto!!! La respuesta es: %s.\n", ciudadCorrecta.getNombre());
