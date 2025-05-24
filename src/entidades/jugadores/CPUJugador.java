@@ -1,9 +1,11 @@
-package Entidades.Tipos;
+package entidades.jugadores;
 
 import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
+import entidades.preguntas.*;
+import gestion.LogGestor;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,9 +27,11 @@ public class CPUJugador extends Jugador {
                 e = new ExpressionBuilder(pregunta.getOperacion()).build();
             } catch (UnknownFunctionException ex) {
                 System.err.println("Función desconocida, no es posible calcular." + ex);
+                LogGestor.logError(ex);
                 ex.printStackTrace();
             } catch (UnparsableExpressionException ex) {
                 System.err.println("No es posible parsear la funcion. " + ex);
+                LogGestor.logError(ex);
                 ex.printStackTrace();
             }
             double result = e.calculate();

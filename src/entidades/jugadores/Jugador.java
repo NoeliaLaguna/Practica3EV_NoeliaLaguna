@@ -1,4 +1,6 @@
-package Entidades.Tipos;
+package entidades.jugadores;
+
+import entidades.preguntas.Pregunta;
 
 import java.util.Objects;
 

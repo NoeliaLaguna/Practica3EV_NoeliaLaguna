@@ -1,4 +1,7 @@
-package Entidades.Tipos;
+package entidades.jugadores;
+
+import entidades.preguntas.CronometroPregunta;
+import entidades.preguntas.Pregunta;
 
 import java.time.Duration;
 import java.time.LocalTime;

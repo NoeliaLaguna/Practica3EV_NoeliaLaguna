@@ -1,11 +1,12 @@
-package Entidades.Tipos;
+package entidades.preguntas;
 
-import Entidades.Dominio.Configuracion;
-import Utils.Constantes;
 import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
+import gestion.ConfigGestor;
+import gestion.LogGestor;
+import utils.Constantes;
 
 import java.util.Random;
 
@@ -29,9 +30,8 @@ public class MatematicasPregunta implements Pregunta {
     }
 
     @Override
-    public void preguntar(Configuracion config) {
+    public void preguntar() {
 
-        //Consultar con el profe.
         Random numeroRandom = new Random();
         int numeroOperandos = numeroRandom.nextInt(4, 9);
         int numero;
@@ -44,7 +44,7 @@ public class MatematicasPregunta implements Pregunta {
                 operador = numeroRandom.nextInt(0, 3);
                 operacion.append(numero).append(Constantes.OPERADORES[operador]);
             } else {
-                operacion.append(numero);//Consultar con el profe.
+                operacion.append(numero);
             }
         }
 
@@ -55,9 +55,11 @@ public class MatematicasPregunta implements Pregunta {
             e = new ExpressionBuilder(this.operacion).build();
         } catch (UnknownFunctionException ex) {
             System.err.println("Función desconocida, no es posible calcular." + ex);
+            LogGestor.logError(ex);
             ex.printStackTrace();
         } catch (UnparsableExpressionException ex) {
             System.err.println("No es posible parsear la funcion. " + ex);
+            LogGestor.logError(ex);
             ex.printStackTrace();
         }
 
@@ -70,7 +72,7 @@ public class MatematicasPregunta implements Pregunta {
          * si modo depuracion
          * sout(this.respuestaCorrecta)
          * */
-        if (config.isDepuracion()) {
+        if (ConfigGestor.getConfig().isDepuracion()) {
             System.out.printf("Le respuesta es: %d\n", respuestaCorrecta);
         }
 

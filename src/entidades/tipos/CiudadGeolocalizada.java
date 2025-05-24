@@ -1,4 +1,4 @@
-package Entidades.Tipos;
+package entidades.tipos;
 
 public class CiudadGeolocalizada {
     private String nombre;

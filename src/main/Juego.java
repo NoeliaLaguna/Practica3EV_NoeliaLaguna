@@ -1,12 +1,19 @@
-package Entidades.Dominio;
+package main;
 
-import Entidades.Tipos.*;
-import Utils.Constantes;
+import entidades.jugadores.CPUJugador;
+import entidades.jugadores.HumanoJugador;
+import entidades.jugadores.Jugador;
+import entidades.preguntas.*;
+import gestion.ConfigGestor;
+import gestion.HistorialGestor;
+import gestion.JugadorGestor;
+import gestion.LogGestor;
+import utils.Constantes;
 
 import java.io.IOException;
 import java.util.*;
 
-import static Utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
+import static utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
 /**
  * Clase principal que gestiona el desarrollo de una partida del juego.
@@ -26,13 +33,11 @@ public class Juego {
     private List<Jugador> jugadores;
     private List<Pregunta> preguntas;
     private int rondas;
-    private boolean depuracion;
     private JugadorGestor gestorJugador;
     private HistorialGestor gestorHistorial;
-    private ConfigGestor gestorConfig;
-    private LogGestor gestorLogs;
     private ArrayList<HumanoJugador> jugadoresHumanosDisponibles;
-    Configuracion config;
+    private int jugadoresHumanos = 0;
+    private int jugadoresCPU = 0;
 
     /**
      * Crea una nueva instancia de Juego con los gestores necesarios para su manejo y el manejo de los ficheros.
@@ -40,15 +45,10 @@ public class Juego {
      *
      * @param gestorJugador   Se recibe el gestor necesario para acceder a los metodos de gestion de los jugadores desde la clase juego.
      * @param gestorHistorial Se recibe el gestor necesario para acceder a los metodos de gestion del historial desde la clase juego.
-     * @param gestorConfig    Se recibe el gestor necesario para acceder a los metodos de gestion de la configuración desde la clase juego.
-     * @param gestorLogs      Se recibe el gestor necesario para acceder a los metodos de gestion de los logs desde la clase juego.
      */
-    public Juego(JugadorGestor gestorJugador, HistorialGestor gestorHistorial, ConfigGestor gestorConfig, LogGestor gestorLogs) {
+    public Juego(JugadorGestor gestorJugador, HistorialGestor gestorHistorial) {
         this.gestorJugador = gestorJugador;
         this.gestorHistorial = gestorHistorial;
-        this.gestorConfig = gestorConfig;
-        this.gestorLogs = gestorLogs;
-
     }
 
     /**
@@ -56,9 +56,10 @@ public class Juego {
      * Invoca los metodos configurarPartida(), elegirTipoPartida(), empezar() y terminar().
      */
     public void ejecutar() throws IOException {
-        config = gestorConfig.leer();
+        ConfigGestor.leer();
         this.configurarPartida();
         this.elegirTipoPartida();
+
         this.empezar();
         this.terminar();
     }
@@ -121,11 +122,8 @@ public class Juego {
     private void configurarPartida() throws IOException {
         Scanner teclado = new Scanner(System.in);
         this.jugadoresHumanosDisponibles = this.gestorJugador.listar();
-        int jugadoresHumanos = -1;
-        int jugadoresCPU = 0;
-
         //HECHO:controlar si se introduce numero decimal.
-        int numJugadores = -1;
+        int numJugadores;
         do {
             System.out.println("Indica número de jugadores entre 2 y 4");
             String opcionEscrita = stringConComprobacionDigitNoDecimales();
@@ -133,7 +131,7 @@ public class Juego {
 
         } while (numJugadores > 4 || numJugadores < 2);
 
-        int limiteJugadoresHumanos = 0;
+        int limiteJugadoresHumanos;
         if (this.jugadoresHumanosDisponibles.size() >= numJugadores) {
             limiteJugadoresHumanos = numJugadores;
         } else {
@@ -193,6 +191,7 @@ public class Juego {
      * Después dentro de un bucle "for", usando como limite el atributo rondas, invoca el metodo jugarRonda() que pertenece a esta misma clase.
      */
     private void empezar() throws IOException {
+        LogGestor.logAccion("Inicio de partida con " + jugadoresHumanos + " jugadores humanos, " + jugadoresCPU + " jugadores de CPU");
 
         Collections.shuffle(jugadores);
 
@@ -229,8 +228,11 @@ public class Juego {
         }
         if (ganadores.size() > 1) {
             System.out.println("Hay un empate entre varios jugadores. Los ganadores son: ");
+            LogGestor.logAccion(
+                    "Fin de partida con " + jugadores.size() + " jugadores. Ha habido empate. Consulte el histórico para más información");
         } else {
             System.out.print("El ganador es: ");
+            LogGestor.logAccion("Fin de partida con " + jugadores.size() + " jugadores. Ganador ha sido " + ganadores.getFirst());
         }
         for (Jugador ganador : ganadores) {
             System.out.println(ganador.getNombre());
@@ -240,6 +242,7 @@ public class Juego {
             gestorHistorial.registrar(this);
         } catch (IOException e) {
             System.err.println("\nError al registrar la partida." + e);
+            LogGestor.logError(e);
             e.printStackTrace();
         }
 
@@ -247,7 +250,7 @@ public class Juego {
 
     /**
      * Este metodo crea una de un tipo pregunta al azar usando un switch y número aleatorio de la lista del switch.
-     * Después llama al metodo preguntar(), que pertenece a la clase Pregunta, y al metodo evaluarRespuesta().
+     * Después llama al metodo {@code preguntar()}, que pertenece a la clase Pregunta, y al metodo evaluarRespuesta().
      * Si el valor que devuelve el metodo evaluarRespuesta() es True, se llama al metodo puntuar, que pertenece a la clase Jugador.
      */
     private void jugarRonda() {
@@ -270,7 +273,7 @@ public class Juego {
             boolean acierto = false;
 
             if (pregunta != null) {
-                pregunta.preguntar(config);
+                pregunta.preguntar();
 
                 for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
                     System.out.println("\nEscribe tu respuesta:");

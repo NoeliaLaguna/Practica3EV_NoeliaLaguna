@@ -1,4 +1,4 @@
-package Entidades.Dominio;
+package entidades.tipos;
 
 public class Configuracion {
     private boolean depuracion;

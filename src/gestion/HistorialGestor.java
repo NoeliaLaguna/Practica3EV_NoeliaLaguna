@@ -1,7 +1,8 @@
-package Entidades.Dominio;
+package gestion;
 
-import Entidades.Tipos.HumanoJugador;
-import Utils.Constantes;
+import entidades.jugadores.HumanoJugador;
+import main.Juego;
+import utils.Constantes;
 
 import java.io.IOException;
 import java.nio.file.Files;

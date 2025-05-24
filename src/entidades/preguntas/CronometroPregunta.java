@@ -1,6 +1,4 @@
-package Entidades.Tipos;
-
-import Entidades.Dominio.Configuracion;
+package entidades.preguntas;
 
 import java.time.LocalTime;
 import java.util.Random;
@@ -32,7 +30,7 @@ public class CronometroPregunta implements Pregunta {
      * Después muestra por pantalla el mensaje al usuario.
      */
     @Override
-    public void preguntar(Configuracion config) {
+    public void preguntar() {
         Random segundosRndm = new Random();
         this.segundos = segundosRndm.nextInt(1, 6);
         System.out.printf("Debes pulsar ENTER una vez. Una vez pulses ENTER, tienes que esperar %d segundos y pulsar ENTER de nuevo. \n"

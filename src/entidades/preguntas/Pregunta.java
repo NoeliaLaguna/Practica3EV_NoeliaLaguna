@@ -1,10 +1,8 @@
-package Entidades.Tipos;
-
-import Entidades.Dominio.Configuracion;
+package entidades.preguntas;
 
 public interface Pregunta {
 
-    public void preguntar(Configuracion config);
+    public void preguntar();
 
     public boolean evaluarRespuesta(String respuesta);// throws UnparsableExpressionException, UnknownFunctionException;
 

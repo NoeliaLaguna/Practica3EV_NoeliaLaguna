@@ -1,7 +1,9 @@
-package Entidades.Tipos;
+package entidades.preguntas;
 
-import Entidades.Dominio.Configuracion;
-import Utils.Constantes;
+import entidades.tipos.CiudadGeolocalizada;
+import gestion.ConfigGestor;
+import gestion.LogGestor;
+import utils.Constantes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +38,7 @@ public class GeografiaPregunta implements Pregunta {
                 ciudades.add(new CiudadGeolocalizada(ciudad, lat, lng));
             }
         } catch (IOException ex) {
+            LogGestor.logError(ex);
             ex.printStackTrace();
         }
     }
@@ -67,14 +70,13 @@ public class GeografiaPregunta implements Pregunta {
      * Metodo para lanzar la pregunta.
      */
     @Override
-    public void preguntar(Configuracion config) {
+    public void preguntar() {
         Random rnd = new Random();
         ArrayList<Integer> indicesCiudades = new ArrayList<>();
         for (int i = 0; i < ciudades.size(); i++) {
             indicesCiudades.add(i);
         }
 
-        //HECHO: Las ciudades objetivo y las opciones se repiten, arreglar esto.
         int indiceObjetivo = rnd.nextInt(0, indicesCiudades.size());
         this.objetivo = ciudades.get(indiceObjetivo);
         indicesCiudades.remove((Integer) indiceObjetivo);
@@ -93,7 +95,7 @@ public class GeografiaPregunta implements Pregunta {
 
         for (int cont = 0; cont < ciudadesOpciones.size(); cont++) {
 
-            System.out.printf("%s) %s\n", opcion, ciudadesOpciones.get(cont).getNombre());
+            System.out.printf("\n%s) %s", opcion, ciudadesOpciones.get(cont).getNombre());
             double distanciaAObjetivo = calcularDistancia(objetivo, ciudadesOpciones.get(cont));
             if (distanciaAObjetivo < distanciaMinima) {
                 distanciaMinima = distanciaAObjetivo;
@@ -107,7 +109,7 @@ public class GeografiaPregunta implements Pregunta {
          * sout respuetaCorrecta
          */
 
-        if (config.isDepuracion()) {
+        if (ConfigGestor.getConfig().isDepuracion()) {
             mostrarDistanciasOpciones();
             System.out.printf("\nLe respuesta es: %s\n", opcionCorrecta);
         }
@@ -120,7 +122,7 @@ public class GeografiaPregunta implements Pregunta {
 
             double distancia = calcularDistancia(this.objetivo, ciudadesOpciones.get(cont));
 
-            System.out.printf("\n%s) %s -> %.2f\n", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
+            System.out.printf("\n%s) %s -> %.2f", opcion, ciudadesOpciones.get(cont).getNombre(), distancia);
             opcion++;
         }
     }

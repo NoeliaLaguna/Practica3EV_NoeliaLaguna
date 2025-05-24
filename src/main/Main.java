@@ -1,28 +1,28 @@
-package Entidades.Dominio;
+package main;
 
-import Entidades.Tipos.HumanoJugador;
+import entidades.jugadores.HumanoJugador;
+import gestion.HistorialGestor;
+import gestion.JugadorGestor;
+import gestion.LogGestor;
 
 import java.io.IOException;
 import java.util.Scanner;
 
-import static Utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
+import static utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
 public class Main {
     public static void main(String[] args) {
 
         JugadorGestor gestorJugador;
         HistorialGestor gestorhistorial;
-        LogGestor gestorLogs;
-        ConfigGestor gestorConfig;
 
         try {
             gestorJugador = new JugadorGestor();
             gestorhistorial = new HistorialGestor();
-            gestorConfig = new ConfigGestor();
-            gestorLogs = new LogGestor();
 
         } catch (IOException ex) {
             ex.printStackTrace();
+            LogGestor.logError(ex);
             return;
         }
         boolean salir = false;
@@ -48,15 +48,17 @@ public class Main {
                         break;
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    LogGestor.logError(e);
+                    e.printStackTrace();
                 }
                 try {
                     System.out.println("Has elegido la opción \"Jugar una partida\" \n");
-                    Juego juego = new Juego(gestorJugador, gestorhistorial, gestorConfig, gestorLogs);
+                    Juego juego = new Juego(gestorJugador, gestorhistorial);
                     juego.ejecutar();
 
                 } catch (IOException e) {
                     System.err.println("Error al iniciar el juego.");
+                    LogGestor.logError(e);
                 }
                 break;
             case 2:
@@ -65,6 +67,7 @@ public class Main {
                     gestorhistorial.verRanking(gestorJugador.listar());
                 } catch (IOException e) {
                     System.err.println("Error al intentar mostrar el ranking." + e);
+                    LogGestor.logError(e);
                     e.printStackTrace();
                 }
                 break;
@@ -74,6 +77,7 @@ public class Main {
                     gestorhistorial.mostrar();
                 } catch (IOException e) {
                     System.err.println("Error al intentar mostrar el historial." + e);
+                    LogGestor.logError(e);
                     e.printStackTrace();
                 }
                 break;
@@ -83,6 +87,7 @@ public class Main {
                 try {
                     accederSubmenuJugadores(gestorJugador);
                 } catch (IOException e) {
+                    LogGestor.logError(e);
                     e.printStackTrace();
                 }
                 break;
@@ -133,6 +138,7 @@ public class Main {
                 jugadorGestor.registrar(jug);
             } catch (IOException e) {
                 System.err.println("Error al registrar el jugador: " + e);
+                LogGestor.logError(e);
             }
 
             break;
