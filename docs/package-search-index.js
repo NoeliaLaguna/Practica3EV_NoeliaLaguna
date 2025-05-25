@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"entidades.excepciones"},{"l":"entidades.jugadores"},{"l":"entidades.preguntas"},{"l":"entidades.tipos"},{"l":"gestion"},{"l":"main"},{"l":"utils"}];updateSearchResults();
