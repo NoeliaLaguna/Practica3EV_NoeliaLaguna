@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 
 /*
@@ -71,13 +71,16 @@ public final class LogGestor {
             LocalDate fechaModificacion = Files.getLastModifiedTime(rutaAlArchivoLogs).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             if (!fechaHoy.equals(fechaModificacion)) {
-                crearNuevoFicheroLog(fechaModificacion.format(Constantes.FORMATO_FECHA_RENOMBRADO).toString());
+                crearNuevoFicheroLog(fechaModificacion.format(Constantes.FORMATO_FECHA_RENOMBRADO));
             }
 
-            LocalDateTime fechaHoraLog = LocalDateTime.now();
+            LocalDate fechaLog = LocalDate.now();
+            LocalTime horaLog = LocalTime.now();
 
-            String fechaHoraLogString = fechaHoraLog.format(Constantes.FORMATO_FECHA_HORA);
-            String lineaLog = String.format("%s : %s", fechaHoraLogString, accion);
+            String fechaLogString = fechaLog.format(Constantes.FORMATO_FECHA);
+            String horaLogString = horaLog.format(Constantes.FORMATO_HORA);
+
+            String lineaLog = String.format("[%s] [%s] : %s\n", fechaLogString, horaLogString, accion);
             Files.writeString(rutaAlArchivoLogs, lineaLog, StandardOpenOption.APPEND);
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -11,6 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase final que se utiliza para la gestion de la configuracion del juego.
+ * Se utilizan atributos y metodos estáticos.
+ * Se implementan los metodos: leer(), comprobarFicheroExiste(), getConfig(), cambiarConfigAString() y guardar().
+ *
+ * @author Noelia
+ * @version 1.0
+ */
 public final class ConfigGestor {
 
     private static final Path rutaAlArchivoConfig = Paths.get(Constantes.FICHERO_CONFIGURACION);
@@ -50,18 +58,17 @@ public final class ConfigGestor {
     }
 
     /**
-     * @param config
      * @return
      */
-    private static String serializar(Configuracion config) {
+    private static String cambiarConfigAString() {
         String resultado = "";
         resultado += String.format("depuracion=%s", CONFIG.isDepuracion() ? "true" : "false");
         return resultado;
     }
 
-    public static void guardar(Configuracion config) throws IOException {
+    public static void guardar() throws IOException {
         comprobarFicheroExiste();
-        String configuracionSerializada = serializar(config);
-        Files.writeString(rutaAlArchivoConfig, configuracionSerializada);
+        String configEnString = cambiarConfigAString();
+        Files.writeString(rutaAlArchivoConfig, configEnString);
     }
 }

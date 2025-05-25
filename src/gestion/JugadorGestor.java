@@ -11,6 +11,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase para implementar la interfaz Pregunta.
+ * Se implementan los metodos preguntar y evaluar respuesta.
+ *
+ * @author Noelia
+ * @version 1.0
+ */
 public class JugadorGestor {
 
     private final Path rutaAlArchivo;
@@ -35,7 +42,7 @@ public class JugadorGestor {
             listaJugadores.add(jug.getNombre());
             Files.write(rutaAlArchivo, listaJugadores);
             System.out.println("Se ha añadido el jugador correctamente.");
-            LogGestor.logAccion("Jugador añadido" + jug.getNombre().toUpperCase());
+            LogGestor.logAccion("Jugador añadido " + jug.getNombre().toUpperCase());
         } else {
             System.err.println("Este jugador ya ha sido añadido.");
         }
@@ -61,7 +68,7 @@ public class JugadorGestor {
             listaJugadores.remove(jug.getNombre());
             Files.write(rutaAlArchivo, listaJugadores);
             System.out.println("Se ha eliminado el jugador correctamente.");
-            LogGestor.logAccion("Jugador eliminado" + jug.getNombre().toUpperCase());
+            LogGestor.logAccion("Jugador eliminado " + jug.getNombre().toUpperCase());
         } else {
             System.err.println("No se ha encontrado al jugador.");
         }

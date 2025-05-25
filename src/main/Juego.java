@@ -1,5 +1,7 @@
 package main;
 
+import entidades.comodines.Comodin;
+import entidades.comodines.GeografiaComodin;
 import entidades.jugadores.CPUJugador;
 import entidades.jugadores.HumanoJugador;
 import entidades.jugadores.Jugador;
@@ -11,7 +13,10 @@ import gestion.LogGestor;
 import utils.Constantes;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import static utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 
@@ -31,11 +36,11 @@ import static utils.MetodosEstaticos.stringConComprobacionDigitNoDecimales;
 public class Juego {
 
     private List<Jugador> jugadores;
-    private List<Pregunta> preguntas;
     private int rondas;
     private JugadorGestor gestorJugador;
     private HistorialGestor gestorHistorial;
     private ArrayList<HumanoJugador> jugadoresHumanosDisponibles;
+    private int numJugadores;
     private int jugadoresHumanos = 0;
     private int jugadoresCPU = 0;
 
@@ -53,13 +58,21 @@ public class Juego {
 
     /**
      * Este metodo se encarga de la ejecución de todos los metodos necesarios para el desarrollo de la partida.
-     * Invoca los metodos configurarPartida(), elegirTipoPartida(), empezar() y terminar().
+     * Invoca los metodos ConfigGestor.leer(), configurarPartida(), elegirTipoPartida(), empezar() y terminar().
+     *
+     * @throws IOException puede lanzar una excepción en de gestion del fichero por el metodo ConfigGestor.leer(). Y los metodos que invoca pueden
+     *                     lanzar una excepción del mismo tipo.
      */
     public void ejecutar() throws IOException {
         ConfigGestor.leer();
-        this.configurarPartida();
-        this.elegirTipoPartida();
+        this.elegirNumeroJugadores();
+        this.AnyadirJugadoresPartida();
+        //if(ConfigGestor.getConfig().usarComodines()){
 
+        //}
+        // si config == con comodines: repartir comodines
+        this.repatirComodines();
+        this.elegirTipoPartida();
         this.empezar();
         this.terminar();
     }
@@ -69,9 +82,7 @@ public class Juego {
      * base al tipo de partida se modifica el atributo rondas con el numero correspondiente.
      */
     private void elegirTipoPartida() {
-        Scanner teclado = new Scanner(System.in);
 
-        boolean salir = false;
         System.out.println("""
                 ¿Que tipo de partida quieres jugar? Elige el numero de la opción que prefieras.
                 1.- partida rápida (3 Rondas)
@@ -115,15 +126,12 @@ public class Juego {
 
     /**
      * Este metodo se encarga de la selección del número de jugadores haciendo las comprobaciones necesarias.
-     * Después muestra la lista de jugadores disponibles al usuario para que elija con los jugadores que quiere jugar. También realizando las
-     * comprobaciones necesarias (que no se repita el jugador o que el jugador se ecnuentre en la lista de jugadores registrados).
-     * Después se añaden a la lista de jugadores que van a jugar la partida, tanto humanos como CPUs.
+     *
+     * @throws IOException puede lanzar una excepción en de gestion del fichero por el metodo gestorJugador.listar().
      */
-    private void configurarPartida() throws IOException {
-        Scanner teclado = new Scanner(System.in);
+    private void elegirNumeroJugadores() throws IOException {
         this.jugadoresHumanosDisponibles = this.gestorJugador.listar();
-        //HECHO:controlar si se introduce numero decimal.
-        int numJugadores;
+
         do {
             System.out.println("Indica número de jugadores entre 2 y 4");
             String opcionEscrita = stringConComprobacionDigitNoDecimales();
@@ -148,13 +156,20 @@ public class Juego {
         if (jugadoresHumanos < numJugadores) {
             jugadoresCPU = numJugadores - jugadoresHumanos;
             System.out.printf("El numero de jugadores CPU es: %d \n\n", jugadoresCPU);
-
         }
+    }
 
+    /**
+     * Este metodo muestra la lista de jugadores disponibles al usuario para que elija con los jugadores que quiere jugar. También realizando las
+     * comprobaciones necesarias (que no se repita el jugador o que el jugador se ecnuentre en la lista de jugadores registrados).
+     * Después se añaden a la lista de jugadores que van a jugar la partida, tanto humanos como CPUs.
+     *
+     * @throws IOException puede lanzar una excepción en de gestion del fichero por el metodo gestorJugador.mostrar().
+     */
+    private void AnyadirJugadoresPartida() throws IOException {
         jugadores = new ArrayList<>();
-
         ArrayList<Integer> opcionesAntiguas = new ArrayList<>();
-        int opcionLista = -1;
+        int opcionLista;
         for (int cont = 1; cont <= jugadoresHumanos; cont++) {
             String opcionEscrita;
             do {
@@ -183,14 +198,13 @@ public class Juego {
                 jugadores.add(CPU);
             }
         }
-
     }
 
     /**
      * Este metodo ordena la lista de jugadores en un orden aleatorio.
      * Después dentro de un bucle "for", usando como limite el atributo rondas, invoca el metodo jugarRonda() que pertenece a esta misma clase.
      */
-    private void empezar() throws IOException {
+    private void empezar() {
         LogGestor.logAccion("Inicio de partida con " + jugadoresHumanos + " jugadores humanos, " + jugadoresCPU + " jugadores de CPU");
 
         Collections.shuffle(jugadores);
@@ -256,11 +270,12 @@ public class Juego {
     private void jugarRonda() {
         for (int cont = 0; cont < jugadores.size(); cont++) {
             Jugador jugador = jugadores.get(cont);
+            // if jugador.getVidas() ==0
             System.out.printf("\n Es el turno del jugador: %s \n \n", jugadores.get(cont).getNombre());
 
             Random aleatorio = new Random();
             String respuesta;
-            int tipoDePregunta = aleatorio.nextInt(1, 5);
+            int tipoDePregunta = 3; // aleatorio.nextInt(1, 5);
             Pregunta pregunta = null;
             switch (tipoDePregunta) {
             case 1 -> pregunta = new MatematicasPregunta();
@@ -276,17 +291,50 @@ public class Juego {
                 pregunta.preguntar();
 
                 for (int i = 0; i < pregunta.getNumeroIntentos() && !acierto; i++) {
+                    Comodin comodin = null;
+                    for (Comodin c : jugador.getComodines()) {
+                        if (c.sePuedeAplicar(pregunta)) {
+                            comodin = c;
+                        }
+                    }
+
                     System.out.println("\nEscribe tu respuesta:");
                     respuesta = jugador.responder(pregunta);
-                    acierto = pregunta.evaluarRespuesta(respuesta);
+                    acierto = pregunta.evaluarRespuesta(respuesta, comodin != null);
+
+                    if (!acierto && comodin != null) {
+                        // preguntar a l usuario si quiere usarlo
+                        comodin.aplicar(pregunta);
+                        System.out.println("\nEscribe tu respuesta:");
+                        respuesta = jugador.responder(pregunta);
+                        acierto = pregunta.evaluarRespuesta(respuesta, false);
+                        jugador.getComodines().remove(comodin);
+
+                    }
+
                     if (acierto) {
                         jugador.puntuar();
+                    } else {
+                        //jugador.restarVida()
                     }
                 }
 
             }
         }
 
+    }
+
+    private void repatirComodines() {
+        for (Jugador jugador : jugadores) {
+            if (jugador instanceof HumanoJugador) {
+                ArrayList<Comodin> comodinesAsignar = new ArrayList<>();
+                for (int cont = 0; cont < 3; cont++) {
+                    // agregar 1 comodin a comodinesAsignar
+                    comodinesAsignar.add(new GeografiaComodin());
+                }
+                jugador.setComodines(comodinesAsignar);
+            }
+        }
     }
 
     @Override

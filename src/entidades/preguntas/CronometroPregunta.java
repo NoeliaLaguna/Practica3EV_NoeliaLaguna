@@ -5,6 +5,7 @@ import java.util.Random;
 
 /**
  * Clase para implementar la interfaz Pregunta.
+ * <p>
  * Se implementan los metodos preguntar y evaluar respuesta.
  *
  * @author NoeliaLaguna
@@ -22,8 +23,6 @@ public class CronometroPregunta implements Pregunta {
         return 1;
     }
 
-    //TODO:Esto no lo hace bien a veces no se muestra el mensaje al pulsar enter, REVISAR.
-
     /**
      * Metodo para lanzar la pregunta por pantalla.
      * En este caso se genera un número aleatorio del 1 al 5 que se le asigna al atributo "segundos".
@@ -39,17 +38,16 @@ public class CronometroPregunta implements Pregunta {
 
     /**
      * Metodo para evaluar una respuesta recibida en tipo String.
-     * En este caso se evalua si los milisegundos recibidos por parametros son iguale al atributo segundos de esta clase, con un margen de error de
+     * En este caso se evalúa si los milisegundos recibidos por parametros son iguales al atributo segundos de esta clase, con un margen de error de
      * ±0.5 segundos.
      * <p>
      *
-     * @param respuesta Se recibe un String el cual se evalua en el metodo para saber si es correcto o no.
+     * @param respuesta Se recibe un String el cual se evalúa en el metodo para saber si es correcto o no.
      * @return boolean Si la respuesta recibida en parametros es correcta se devuelve True, o si no es asi, False.
      */
     @Override
     public boolean evaluarRespuesta(String respuesta) {
 
-        // evaluacion
         long millisRespuesta = Long.parseLong(respuesta);
 
         System.out.printf("Has pulsado en %.2f segundos\n", millisRespuesta / 1000d);
